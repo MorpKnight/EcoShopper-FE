@@ -2,7 +2,6 @@ import axios from "axios";
 
 const BE_URI = import.meta.env.VITE_BE_URI;
 
-// exports hello world fucntion
 export const registerEmail = async (email: string, password: string, displayname: string, fullname: string) => {
     if(!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) throw new Error('Invalid email address');
     if(password.length < 8) throw new Error('Password must be at least 8 characters long');
