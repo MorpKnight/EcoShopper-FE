@@ -24,19 +24,21 @@ export default function DevelopmentPage() {
   };
 
   return (
-    <>
-      <header className="w-screen bg-tertiary px-4 py-2">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={handleSearchChange}
-          className="w-full max-w-md rounded p-2 text-text-secondary"
-        />
-      </header>
-      <section className="flex w-screen justify-center px-4">
-        <ProductTable searchQuery={search} />
+    <main className="flex w-screen justify-center">
+      <section className="w-screen max-w-sm">
+        <header className="mb-4 w-full px-4 py-2">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={handleSearchChange}
+            className="w-full max-w-sm rounded-full px-4 py-2 text-text-secondary placeholder-text-secondary drop-shadow focus:outline-none"
+          />
+        </header>
+        <section className="flex w-full justify-center px-4">
+          <ProductTable searchQuery={search} />
+        </section>
       </section>
-    </>
+    </main>
   );
 }
