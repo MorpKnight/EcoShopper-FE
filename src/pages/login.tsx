@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
     try {
       const response = await loginEmail(email, password);
       toast.success(response.message);
-      // navigate('/');
+      navigate('/');
     } catch (error: any) {
       toast.error(error.message);
     }
