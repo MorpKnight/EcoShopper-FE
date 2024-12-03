@@ -19,6 +19,10 @@ export default {
         'tertiary': '#FFE8D1',
         'tertiary-light': '#FFF5EB',
       },
+      fontFamily: {
+        // inter
+        'inter': ['Inter', 'sans-serif'],
+      },
     },
   },
   plugins: [],

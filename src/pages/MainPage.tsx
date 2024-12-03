@@ -33,7 +33,106 @@ export default function MainPage() {
             {
               id: '2',
               product_name: 'Sample Product 2',
-              product_description: 'This is another sample product description.',
+              product_description:
+                'This is another sample product description.',
+              product_category: 'Sample Category',
+              product_price: 20,
+              product_image: 'https://via.placeholder.com/150',
+              product_sustainability_rating: 4,
+              product_producer_id: '2',
+              product_type: 'food',
+              is_organic: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              product_name: 'Sample Product 2',
+              product_description:
+                'This is another sample product description.',
+              product_category: 'Sample Category',
+              product_price: 20,
+              product_image: 'https://via.placeholder.com/150',
+              product_sustainability_rating: 4,
+              product_producer_id: '2',
+              product_type: 'food',
+              is_organic: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              product_name: 'Sample Product 2',
+              product_description:
+                'This is another sample product description.',
+              product_category: 'Sample Category',
+              product_price: 20,
+              product_image: 'https://via.placeholder.com/150',
+              product_sustainability_rating: 4,
+              product_producer_id: '2',
+              product_type: 'food',
+              is_organic: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              product_name: 'Sample Product 2',
+              product_description:
+                'This is another sample product description.',
+              product_category: 'Sample Category',
+              product_price: 20,
+              product_image: 'https://via.placeholder.com/150',
+              product_sustainability_rating: 4,
+              product_producer_id: '2',
+              product_type: 'food',
+              is_organic: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              product_name: 'Sample Product 2',
+              product_description:
+                'This is another sample product description.',
+              product_category: 'Sample Category',
+              product_price: 20,
+              product_image: 'https://via.placeholder.com/150',
+              product_sustainability_rating: 4,
+              product_producer_id: '2',
+              product_type: 'food',
+              is_organic: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              product_name: 'Sample Product 2',
+              product_description:
+                'This is another sample product description.',
+              product_category: 'Sample Category',
+              product_price: 20,
+              product_image: 'https://via.placeholder.com/150',
+              product_sustainability_rating: 4,
+              product_producer_id: '2',
+              product_type: 'food',
+              is_organic: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              product_name: 'Sample Product 2',
+              product_description:
+                'This is another sample product description.',
+              product_category: 'Sample Category',
+              product_price: 20,
+              product_image: 'https://via.placeholder.com/150',
+              product_sustainability_rating: 4,
+              product_producer_id: '2',
+              product_type: 'food',
+              is_organic: true,
+              created_at: new Date().toISOString(),
+            },
+            {
+              id: '2',
+              product_name: 'Sample Product 2',
+              product_description:
+                'This is another sample product description.',
               product_category: 'Sample Category',
               product_price: 20,
               product_image: 'https://via.placeholder.com/150',
@@ -68,7 +167,11 @@ export default function MainPage() {
 
   const getPageNumbers = () => {
     const pageNumbers = [];
-    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+    for (
+      let i = Math.max(1, currentPage - 2);
+      i <= Math.min(totalPages, currentPage + 2);
+      i++
+    ) {
       pageNumbers.push(i);
     }
     return pageNumbers;
@@ -77,10 +180,8 @@ export default function MainPage() {
   return (
     <main className="flex w-screen justify-center">
       <section className="flex min-h-screen w-screen max-w-screen-sm flex-col items-center bg-tertiary-light">
-
         {/* Header */}
         <header className="flex h-14 w-full items-center justify-between bg-tertiary p-4">
-
           {/* Menu Icon */}
           <div className="flex h-8 w-8 flex-col items-center justify-center space-y-0.5 bg-white">
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
@@ -113,17 +214,23 @@ export default function MainPage() {
             <p className="text-center text-text-secondary">There's no data</p>
           ) : (
             currentProducts.map((product: Product) => (
-              <div key={product.id} className="flex items-center justify-between">
+              <div
+                key={product.id}
+                className="flex items-center justify-between"
+              >
                 {/* Product Info */}
                 <div className="mb-3 ml-6 mt-4 max-w-xs">
                   <h2 className="text-[1.5rem] font-semibold text-text-primary">
                     {product.product_name}
                   </h2>
-                  <p className="text-text-secondary max-h-16 overflow-y-auto">
+                  <p className="max-h-16 overflow-y-auto text-text-secondary">
+
                     {product.product_description}
                   </p>
                   <div className="flex items-center text-text-secondary">
-                    <span className="text-[1.5rem]">{product.product_sustainability_rating}★</span>
+                    <span className="text-[1.5rem]">
+                      {product.product_sustainability_rating}★
+                    </span>
                   </div>
                 </div>
                 {/* Product Image */}
@@ -158,7 +265,9 @@ export default function MainPage() {
             </button>
           ))}
           <button
-            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+            onClick={() =>
+              handlePageChange(Math.min(totalPages, currentPage + 1))
+            }
             disabled={currentPage === totalPages}
             className="h-8 w-8 rounded-full bg-secondary-500"
           >
