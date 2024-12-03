@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { loginEmail } from "../handler/auth.handler";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { loginEmail } from '../handler/auth.handler';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,12 +24,14 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md space-y-6 rounded bg-white p-8 shadow-md">
-        <h2 className="text-center text-2xl font-bold">Login</h2>
+    <div className="flex min-h-screen w-screen items-center justify-center overflow-x-hidden bg-tertiary-light">
+      <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
+        <h2 className="text-center text-2xl font-bold text-text-primary">
+          Login
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-medium text-text-secondary">
               Email:
             </label>
             <input
@@ -37,11 +39,11 @@ const LoginPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200"
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring focus:ring-secondary-500"
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-medium text-text-secondary">
               Password:
             </label>
             <input
@@ -49,12 +51,12 @@ const LoginPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200"
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring focus:ring-secondary-500"
             />
           </div>
           <button
             type="submit"
-            className="w-full rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
+            className="w-full rounded bg-secondary-700 px-4 py-2 text-text-white hover:bg-secondary-500 focus:outline-none focus:ring focus:ring-secondary-300"
           >
             Login
           </button>
@@ -65,4 +67,3 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
-

@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class", 
   theme: {
     extend: {
       colors: {
@@ -18,6 +19,7 @@ export default {
         'secondary-700': '#826251',
         'tertiary': '#FFE8D1',
         'tertiary-light': '#FFF5EB',
+        'beige': '#F5F5DC',
       },
       fontFamily: {
         // inter

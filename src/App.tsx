@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import FooterNavigation from './components/FooterNavigation';
 import AuthPage from './pages/AuthPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import LoginPage from './pages/login';
 
 const App: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const App: React.FC = () => {
       <Navbar />
       <div className="flex min-h-screen flex-col">
         <Routes>
+        <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/" element={<MainPage />} />

@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
             display_picture: '',
             sustainability_rating: 0,
             role: 'user',
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
           });
         } finally {
           setLoadingProfile(false);
@@ -70,17 +70,18 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="flex h-14 w-full items-center justify-between bg-tertiary p-4">
+      {/* Navbar */}
+      <header className="flex h-14 w-screen items-center justify-between bg-tertiary p-4 transition duration-200 hover:bg-beige">
         <div className="flex items-center">
           {/* Menu Icon */}
-          <div className="flex h-8 w-8 flex-col items-center justify-center space-y-0.5 bg-white">
+          <div className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center space-y-0.5 rounded-md bg-white transition duration-200">
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
           </div>
           {/* EcoShopper Text */}
           <div
-            className="ml-2 text-xl font-bold text-text-primary select-none cursor-pointer"
+            className="ml-2 cursor-pointer select-none rounded-md px-2 py-1 text-xl font-bold text-secondary-700 transition duration-200"
             onClick={() => navigate('/')}
           >
             EcoShopper
@@ -88,63 +89,90 @@ const Navbar: React.FC = () => {
         </div>
         {/* Search Bar */}
         {!isAuthPage && (
-          <form onSubmit={handleSearchSubmit} className="flex w-full max-w-lg mx-4">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="mx-4 flex w-full max-w-lg"
+          >
             <input
               type="text"
               placeholder="Search"
               value={search}
               onChange={handleSearchChange}
-              className="flex h-8 w-full items-center justify-center rounded-full bg-tertiary px-4 text-text-secondary placeholder-text-secondary shadow focus:outline-none"
+              className="flex h-8 w-full items-center justify-center rounded-full bg-tertiary-light px-4 text-text-secondary placeholder-text-secondary transition duration-200 focus:outline-none focus:ring-2 focus:ring-black"
             />
           </form>
         )}
         {/* Profile or Login/Register */}
-        {token ? (
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white" onClick={handleProfileClick}>
-            <div className="h-3 w-3 rounded-full border border-text-secondary"></div>
-          </div>
-        ) : (
-          !isAuthPage && (
-            <button onClick={() => navigate('/auth')} className="h-8 px-4 rounded-full bg-secondary-500 text-white">
-              Login/Register
-            </button>
-          )
-        )}
+        <div className="flex items-center space-x-4">
+          {token ? (
+            <div
+              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white transition duration-200"
+              onClick={handleProfileClick}
+            >
+              <div className="h-3 w-3 rounded-full border border-text-secondary"></div>
+            </div>
+          ) : (
+            !isAuthPage && (
+              <button
+                onClick={() => navigate('/auth')}
+                className="h-8 rounded-full bg-secondary-700 px-4 text-white transition duration-200"
+              >
+                Login/Register
+              </button>
+            )
+          )}
+        </div>
       </header>
+      {/* Profile Popup */}
       {showProfilePopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="relative bg-white p-6 rounded-lg shadow-lg w-80">
-            <button onClick={handleProfileClick} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative w-96 rounded-xl bg-text-white p-8 shadow-lg">
+            <button
+              onClick={handleProfileClick}
+              className="absolute right-3 top-3 text-gray-600 hover:text-gray-800"
+            >
               &times;
             </button>
             {loadingProfile ? (
-              <div className="flex items-center justify-center h-40">
+              <div className="flex h-40 items-center justify-center">
                 <div className="loader"></div>
               </div>
             ) : (
               userInfo && (
                 <>
-                  <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
-                  <div className="flex items-center mb-4">
+                  <h2 className="mb-6 text-3xl font-semibold text-text-primary">
+                    User Profile
+                  </h2>
+                  {/* Profile Details */}
+                  <div className="mb-6 flex items-center">
                     <img
-                      src={userInfo.display_picture || 'https://cdn-icons-png.freepik.com/256/1077/1077114.png?semt=ais_hybrid'}
+                      src={
+                        userInfo.display_picture ||
+                        'https://cdn-icons-png.freepik.com/256/1077/1077114.png?semt=ais_hybrid'
+                      }
                       alt={userInfo.display_name}
-                      className="h-16 w-16 rounded-full mr-4 border border-gray-300"
+                      className="mr-6 h-20 w-20 rounded-full border border-gray-300"
                     />
                     <div>
-                      <p className="text-lg font-medium">{userInfo.fullname}</p>
+                      <p className="text-lg font-medium text-text-primary">
+                        {userInfo.fullname}
+                      </p>
                       <p className="text-sm text-gray-500">{userInfo.email}</p>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <p><strong>Display Name:</strong> {userInfo.display_name}</p>
-                    <p><strong>Role:</strong> {userInfo.role}</p>
-                    <p><strong>Sustainability Rating:</strong> {userInfo.sustainability_rating}</p>
-                    <p><strong>Joined:</strong> {new Date(userInfo.created_at).toLocaleDateString()}</p>
-                  </div>
-                  <div className="mt-6 flex justify-end space-x-2">
-                    <button onClick={handleProfileClick} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-full hover:bg-gray-400">Close</button>
-                    <button onClick={handleLogout} className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600">Logout</button>
+                  <div className="mt-8 flex justify-end space-x-4">
+                    <button
+                      onClick={handleProfileClick}
+                      className="rounded-full bg-secondary-300 px-6 py-2 text-text-secondary transition duration-200 hover:bg-secondary-500"
+                    >
+                      Close
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="rounded-full bg-secondary-700 px-6 py-2 text-text-white transition duration-200 hover:bg-black"
+                    >
+                      Logout
+                    </button>
                   </div>
                 </>
               )

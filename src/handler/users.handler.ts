@@ -29,11 +29,11 @@ export const getUserProfile = async (): Promise<getUserProfileResponse> => {
   return response.data;
 }
 
-export const buyProducts = async (productId: string, quantity: number) => {
+export const buyProducts = async (productId: string, quantity: number, token: string) => {
     const response = await axios.post(`${BE_URI}/user/buy`, {
         productId, quantity
     }, {
-        headers: { cookies: `token=${getToken()}` }
+        headers: { Authorization: `Bearer ${token}` }
     });
     if(response.status !== 200) throw new Error(response.data.error);
 
