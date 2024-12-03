@@ -19,11 +19,10 @@ export interface Product {
 
 export const getProducts = async (): Promise<Product[]> => {
   const response = await axios.get(`${BE_URI}/goods`);
-  console.log(response);
-  
   if(response.status !== 200) throw new Error(response.data.error);
 
-  return response.data;
+  console.log('Fetched products:', response.data);
+  return response.data.goods;
 }
 
 export const getProduct = async (id: string): Promise<Product> => {
