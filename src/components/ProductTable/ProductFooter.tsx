@@ -1,4 +1,44 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+// import Next from '/assets/Navigation-Next.svg';
+// import Prev from '/assets/Navigation-Prev.svg';
+
+// export default function ProductFooter({
+//   page,
+//   rowsPerPage,
+//   totalProducts,
+//   setPage,
+// }: {
+//   page: number;
+//   rowsPerPage: number;
+//   totalProducts: number;
+//   setPage: (page: number) => void;
+// }) {
+//   const totalPages = Math.ceil(totalProducts / rowsPerPage);
+//   const [pageNumbers, setPageNumbers] = useState<number[]>([1, 2, 3, 4]);
+
+//   //TODO: Menambahkan elipsis saat page terlalu banyak
+//   return (
+//     <div className="flex w-full items-center justify-center gap-x-4 border-t border-text-tertiary py-2">
+//       <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+//         <img src={Prev} className="h-5 w-5" alt="Prev" />
+//       </button>
+//       <span className="flex gap-x-4">
+//         {pageNumbers.map((number) => (
+//           <div
+//             key={number}
+//             className="mb-[0.3rem] flex h-3 w-3 items-center justify-center text-secondary-700 underline"
+//           >
+//             {number}
+//           </div>
+//         ))}
+//       </span>
+//       <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+//         <img src={Next} className="h-5 w-5" alt="Next" />
+//       </button>
+//     </div>
+//   );
+// }
+import { useEffect, useState } from 'react';
 import Next from '/assets/Navigation-Next.svg';
 import Prev from '/assets/Navigation-Prev.svg';
 
@@ -14,30 +54,69 @@ export default function ProductFooter({
   setPage: (page: number) => void;
 }) {
   const totalPages = Math.ceil(totalProducts / rowsPerPage);
-  const [pageNumbers, setPageNumbers] = useState<number[]>([1, 2, 3, 4]);
+  const [pageNumbers, setPageNumbers] = useState<number[]>([]);
 
-  //TODO: Menambahkan elipsis saat page terlalu banyak
+  // Update page numbers based on total pages
+  const updatePageNumbers = () => {
+    const numbers: number[] = [];
+    const maxVisiblePages = 5; // Adjust the number of visible page numbers
+    const start = Math.max(1, page - Math.floor(maxVisiblePages / 2));
+    const end = Math.min(totalPages, start + maxVisiblePages - 1);
+
+    for (let i = start; i <= end; i++) {
+      numbers.push(i);
+    }
+
+    setPageNumbers(numbers);
+  };
+
+  // Update page numbers when page or totalPages changes
+  useEffect(() => {
+    updatePageNumbers();
+  }, [page, totalPages]);
+
   return (
-    <div className="flex items-center justify-center gap-x-2">
+    <div className="flex w-full items-center justify-center gap-x-4 border-t border-text-tertiary py-2">
+      {/* Previous Button */}
       <button
         onClick={() => setPage(page - 1)}
         disabled={page === 1}
-        className="bg-primary rounded-lg px-4 py-2 text-white"
+        className={`flex items-center justify-center rounded-full ${
+          page === 1 ? 'opacity-50' : ''
+        }`}
       >
-        Prev
+        <img src={Prev} className="h-5 w-5" alt="Previous Page" />
       </button>
-      <span className="flex gap-x-4">
+
+      {/* Page Numbers */}
+      <div className="flex gap-x-2">
         {pageNumbers.map((number) => (
-          <div
+          <button
             key={number}
-            className="flex h-3 w-3 items-center justify-center text-secondary-700 underline"
+            onClick={() => setPage(number)}
+            className={`flex h-8 w-8 items-center justify-center rounded-full ${
+              number === page
+                ? 'bg-secondary-500 text-white'
+                : 'bg-secondary-100 text-secondary-700'
+            }`}
           >
             {number}
-          </div>
+          </button>
         ))}
-      </span>
-      <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
-        <img src={Next} alt="Next" />
+        {totalPages > pageNumbers.length && (
+          <span className="flex items-center text-secondary-700">...</span>
+        )}
+      </div>
+
+      {/* Next Button */}
+      <button
+        onClick={() => setPage(page + 1)}
+        disabled={page === totalPages}
+        className={`flex items-center justify-center rounded-full ${
+          page === totalPages ? 'opacity-50' : ''
+        }`}
+      >
+        <img src={Next} className="h-5 w-5" alt="Next Page" />
       </button>
     </div>
   );
