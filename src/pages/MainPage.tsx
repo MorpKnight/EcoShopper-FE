@@ -6,6 +6,8 @@ export default function MainPage() {
   const [search, setSearch] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -56,6 +58,22 @@ export default function MainPage() {
     navigate(`/search?query=${search}`);
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentProducts = products.slice(startIndex, startIndex + itemsPerPage);
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
   return (
     <main className="flex w-screen justify-center">
       <section className="flex min-h-screen w-screen max-w-screen-sm flex-col items-center bg-tertiary-light">
@@ -91,17 +109,17 @@ export default function MainPage() {
 
         {/* Product List */}
         <div className="mt-6 w-full max-w-lg px-4">
-          {products.length === 0 ? (
+          {currentProducts.length === 0 ? (
             <p className="text-center text-text-secondary">There's no data</p>
           ) : (
-            products.map((product: Product) => (
+            currentProducts.map((product: Product) => (
               <div key={product.id} className="flex items-center justify-between">
                 {/* Product Info */}
-                <div className="mb-3 ml-6 mt-4">
+                <div className="mb-3 ml-6 mt-4 max-w-xs">
                   <h2 className="text-[1.5rem] font-semibold text-text-primary">
                     {product.product_name}
                   </h2>
-                  <p className="text-text-secondary">
+                  <p className="text-text-secondary max-h-16 overflow-y-auto">
                     {product.product_description}
                   </p>
                   <div className="flex items-center text-text-secondary">
@@ -121,11 +139,31 @@ export default function MainPage() {
           )}
         </div>
 
-        {/* Pagination Dots */}
+        {/* Pagination */}
         <div className="mt-6 flex items-center justify-center space-x-2">
-          {[1, 2, 3, 4].map((dot) => (
-            <div key={dot} className="h-3 w-3 bg-secondary-500"></div>
+          <button
+            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="h-8 w-8 rounded-full bg-secondary-500"
+          >
+            &lt;
+          </button>
+          {getPageNumbers().map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`h-8 w-12 rounded-lg ${page === currentPage ? 'bg-primary' : 'bg-secondary-500'}`}
+            >
+              {page}
+            </button>
           ))}
+          <button
+            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className="h-8 w-8 rounded-full bg-secondary-500"
+          >
+            &gt;
+          </button>
         </div>
 
         {/* Footer Navigation */}
