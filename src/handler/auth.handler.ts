@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BE_URI = import.meta.env.VITE_BE_URI;
+const BE_URI = import.meta.env.VITE_BE_URI || "https://personal-ecoshopper-be.dzlfwq.easypanel.host";
 
 export const registerEmail = async (email: string, password: string, displayname: string, fullname: string) => {
     if(!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) throw new Error('Invalid email address');

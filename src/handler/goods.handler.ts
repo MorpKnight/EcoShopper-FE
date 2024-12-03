@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BE_URI = import.meta.env.VITE_BE_URI;
+const BE_URI = import.meta.env.VITE_BE_URI || "https://personal-ecoshopper-be.dzlfwq.easypanel.host";
 
 export interface Product {
   id: string;
