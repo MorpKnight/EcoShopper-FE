@@ -224,6 +224,7 @@ export default function MainPage() {
                     {product.product_name}
                   </h2>
                   <p className="max-h-16 overflow-y-auto text-text-secondary">
+
                     {product.product_description}
                   </p>
                   <div className="flex items-center text-text-secondary">

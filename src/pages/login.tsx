@@ -14,8 +14,12 @@ const LoginPage: React.FC = () => {
       const response = await loginEmail(email, password);
       toast.success(response.message);
       navigate('/');
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error("Email or password doesn't match");
+      } else {
+        toast.error('An unknown error occurred');
+      }
     }
   };
 
