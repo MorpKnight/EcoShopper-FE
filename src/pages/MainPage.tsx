@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { getProducts, Product } from '../handler/goods.handler';
+import { useLocation } from 'react-router-dom';
 
 export default function MainPage() {
-  const [search, setSearch] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
-  const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const [loading, setLoading] = useState(true);
+  const itemsPerPage = 6;
+  const location = useLocation();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -15,155 +16,39 @@ export default function MainPage() {
         const data = await getProducts();
         if (Array.isArray(data) && data.length > 0) {
           setProducts(data);
+          setFilteredProducts(data);
         } else {
-          setProducts([
-            {
-              id: '1',
-              product_name: 'Sample Product 1',
-              product_description: 'This is a sample product description.',
-              product_category: 'Sample Category',
-              product_price: 10,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 5,
-              product_producer_id: '1',
-              product_type: 'non-food',
-              is_organic: false,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-          ]);
+          setProducts([]);
+          setFilteredProducts([]);
         }
       } catch (error) {
         console.error('Failed to fetch products:', error);
         setProducts([]);
+        setFilteredProducts([]);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
   }, []);
 
-  const handleSearchSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    navigate(`/search?query=${search}`);
-  };
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const query = searchParams.get('query') || '';
+    const filtered = products.filter(product =>
+      product.product_name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+    setCurrentPage(1);
+  }, [location.search, products]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = products.slice(startIndex, startIndex + itemsPerPage);
+  const currentProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -177,37 +62,20 @@ export default function MainPage() {
     return pageNumbers;
   };
 
-  return (
-    <main className="flex w-screen justify-center">
-      <section className="flex min-h-screen w-screen max-w-screen-sm flex-col items-center bg-tertiary-light">
-        {/* Header */}
-        <header className="flex h-14 w-full items-center justify-between bg-tertiary p-4">
-          {/* Menu Icon */}
-          <div className="flex h-8 w-8 flex-col items-center justify-center space-y-0.5 bg-white">
-            <span className="block h-0.5 w-4 bg-text-secondary"></span>
-            <span className="block h-0.5 w-4 bg-text-secondary"></span>
-            <span className="block h-0.5 w-4 bg-text-secondary"></span>
-          </div>
-
-          {/* Profile Icon */}
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
-            <div className="h-3 w-3 rounded-full border border-text-secondary"></div>
-          </div>
-        </header>
-
-        {/* Search Bar */}
-        <div className="mt-10 flex w-full justify-center px-8">
-          <form onSubmit={handleSearchSubmit} className="flex w-full max-w-lg">
-            <input
-              type="text"
-              placeholder="Search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex h-12 w-full items-center justify-center rounded-full bg-tertiary px-6 text-text-secondary placeholder-text-secondary shadow focus:outline-none"
-            />
-          </form>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="loader"></div>
+          <p>Loading...</p>
         </div>
+      </div>
+    );
+  }
 
+  return (
+    <main className="flex w-screen justify-center flex-grow">
+      <section className="flex min-h-screen w-screen max-w-screen-sm flex-col items-center bg-tertiary-light">
         {/* Product List */}
         <div className="mt-6 w-full max-w-lg px-4">
           {currentProducts.length === 0 ? (
