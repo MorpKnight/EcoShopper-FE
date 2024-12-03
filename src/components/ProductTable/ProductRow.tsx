@@ -4,17 +4,17 @@ export default function ProductRow({
   imagesource,
 }: {
   product: string;
-  rating: number;
+  rating: string;
   imagesource: string;
 }) {
   return (
-    <div className="flex w-full items-center justify-between bg-tertiary-light">
+    <div className="font-inter flex w-full items-center justify-between border-t border-y-text-tertiary">
       <div className="mb-3 ml-6 mt-4">
-        <h2 className="text-[1.5rem] font-semibold text-text-primary">
+        <h2 className="line-clamp-1 text-[1.5rem] leading-7 text-text-secondary">
           {product}
         </h2>
-        <div className="flex items-center text-text-secondary">
-          <span className="text-[1.5rem]">{rating}★</span>
+        <div className="flex items-center">
+          <span className="text-[1.5rem] text-text-tertiary">{rating}★</span>
         </div>
       </div>
       <div className="my-4 mr-6 h-14 w-24 overflow-hidden rounded-2xl bg-white">
