@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { loginEmail } from '../handler/auth.handler';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { loginEmail } from "../handler/auth.handler";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
