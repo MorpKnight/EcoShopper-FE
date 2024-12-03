@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { getUserProfile, User } from '../handler/users.handler';
 
 const Navbar: React.FC = () => {
   const [search, setSearch] = useState('');
   const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const [userInfo, setUserInfo] = useState<User>();
+  const [loadingProfile, setLoadingProfile] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem('token');
@@ -22,16 +25,48 @@ const Navbar: React.FC = () => {
     setShowProfilePopup(!showProfilePopup);
   };
 
-  const isLoginPage = location.pathname === '/login';
-  const isRegisterPage = location.pathname === '/register';
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setShowProfilePopup(false);
+    navigate('/');
+  };
+
+  const isAuthPage = location.pathname === '/auth';
 
   useEffect(() => {
-    if (isLoginPage || isRegisterPage) {
+    if (isAuthPage) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-  }, [isLoginPage, isRegisterPage]);
+  }, [isAuthPage]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (token) {
+        setLoadingProfile(true);
+        try {
+          const data = await getUserProfile();
+          setUserInfo(data.user);
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+          setUserInfo({
+            display_name: 'John Doe',
+            fullname: 'John Doe',
+            email: 'example@example.com',
+            display_picture: '',
+            sustainability_rating: 0,
+            role: 'user',
+            created_at: new Date().toISOString()
+          });
+        } finally {
+          setLoadingProfile(false);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [token]);
 
   return (
     <>
@@ -52,7 +87,7 @@ const Navbar: React.FC = () => {
           </div>
         </div>
         {/* Search Bar */}
-        {!isLoginPage && !isRegisterPage && (
+        {!isAuthPage && (
           <form onSubmit={handleSearchSubmit} className="flex w-full max-w-lg mx-4">
             <input
               type="text"
@@ -69,19 +104,51 @@ const Navbar: React.FC = () => {
             <div className="h-3 w-3 rounded-full border border-text-secondary"></div>
           </div>
         ) : (
-          <div className="flex space-x-2">
-            {!isLoginPage && <button onClick={() => navigate('/login')} className="h-8 px-4 rounded-full bg-secondary-500 text-white">Login</button>}
-            {!isRegisterPage && <button onClick={() => navigate('/register')} className="h-8 px-4 rounded-full bg-secondary-500 text-white">Register</button>}
-          </div>
+          !isAuthPage && (
+            <button onClick={() => navigate('/auth')} className="h-8 px-4 rounded-full bg-secondary-500 text-white">
+              Login/Register
+            </button>
+          )
         )}
       </header>
       {showProfilePopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg">
-            <h2 className="text-xl font-semibold">User Profile</h2>
-            <p>Name: John Doe</p>
-            <p>Email: john.doe@example.com</p>
-            <button onClick={handleProfileClick} className="mt-4 px-4 py-2 bg-primary text-white rounded-full">Close</button>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-80">
+            <button onClick={handleProfileClick} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+              &times;
+            </button>
+            {loadingProfile ? (
+              <div className="flex items-center justify-center h-40">
+                <div className="loader"></div>
+              </div>
+            ) : (
+              userInfo && (
+                <>
+                  <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
+                  <div className="flex items-center mb-4">
+                    <img
+                      src={userInfo.display_picture || 'https://cdn-icons-png.freepik.com/256/1077/1077114.png?semt=ais_hybrid'}
+                      alt={userInfo.display_name}
+                      className="h-16 w-16 rounded-full mr-4 border border-gray-300"
+                    />
+                    <div>
+                      <p className="text-lg font-medium">{userInfo.fullname}</p>
+                      <p className="text-sm text-gray-500">{userInfo.email}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <p><strong>Display Name:</strong> {userInfo.display_name}</p>
+                    <p><strong>Role:</strong> {userInfo.role}</p>
+                    <p><strong>Sustainability Rating:</strong> {userInfo.sustainability_rating}</p>
+                    <p><strong>Joined:</strong> {new Date(userInfo.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <div className="mt-6 flex justify-end space-x-2">
+                    <button onClick={handleProfileClick} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-full hover:bg-gray-400">Close</button>
+                    <button onClick={handleLogout} className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600">Logout</button>
+                  </div>
+                </>
+              )
+            )}
           </div>
         </div>
       )}
