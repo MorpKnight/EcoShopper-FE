@@ -6,6 +6,7 @@ export default function MainPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 6;
   const location = useLocation();
 
@@ -17,140 +18,15 @@ export default function MainPage() {
           setProducts(data);
           setFilteredProducts(data);
         } else {
-          const sampleProducts = [
-            {
-              id: '1',
-              product_name: 'Sample Product 1',
-              product_description: 'This is a sample product description.',
-              product_category: 'Sample Category',
-              product_price: 10,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 5,
-              product_producer_id: '1',
-              product_type: 'non-food',
-              is_organic: false,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              product_name: 'Sample Product 2',
-              product_description:
-                'This is another sample product description.',
-              product_category: 'Sample Category',
-              product_price: 20,
-              product_image: 'https://via.placeholder.com/150',
-              product_sustainability_rating: 4,
-              product_producer_id: '2',
-              product_type: 'food',
-              is_organic: true,
-              created_at: new Date().toISOString(),
-            },
-          ];
-          setProducts(sampleProducts);
-          setFilteredProducts(sampleProducts);
+          setProducts([]);
+          setFilteredProducts([]);
         }
       } catch (error) {
         console.error('Failed to fetch products:', error);
         setProducts([]);
         setFilteredProducts([]);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
@@ -185,6 +61,17 @@ export default function MainPage() {
     }
     return pageNumbers;
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="loader"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="flex w-screen justify-center flex-grow">
