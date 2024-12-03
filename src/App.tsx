@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import FooterNavigation from './components/FooterNavigation';
 import AuthPage from './pages/AuthPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App: React.FC = () => {
   return (
@@ -17,7 +18,7 @@ const App: React.FC = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/dev" element={<DevelopmentPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
-          <Route path="*" element={<h1>Not Found</h1>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
       <FooterNavigation />
