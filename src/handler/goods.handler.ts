@@ -29,7 +29,8 @@ export const getProduct = async (id: string): Promise<Product> => {
   const response = await axios.get(`${BE_URI}/goods/${id}`);
   if(response.status !== 200) throw new Error(response.data.error);
 
-  return response.data;
+  console.log('Fetched product:', response.data.good);
+  return response.data.good;
 }
 
 export const getGoodsByCategory = async (category: string) => {

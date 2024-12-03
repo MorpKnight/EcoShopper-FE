@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProducts, Product } from '../handler/goods.handler';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function MainPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -9,6 +9,7 @@ export default function MainPage() {
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 6;
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,6 +45,10 @@ export default function MainPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleProductClick = (id: string) => {
+    navigate(`/product/${id}`);
   };
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -84,7 +89,8 @@ export default function MainPage() {
             currentProducts.map((product: Product) => (
               <div
                 key={product.id}
-                className="flex items-center justify-between"
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => handleProductClick(product.id)}
               >
                 {/* Product Info */}
                 <div className="mb-3 ml-6 mt-4 max-w-xs">
@@ -92,7 +98,6 @@ export default function MainPage() {
                     {product.product_name}
                   </h2>
                   <p className="max-h-16 overflow-y-auto text-text-secondary">
-
                     {product.product_description}
                   </p>
                   <div className="flex items-center text-text-secondary">
@@ -142,16 +147,6 @@ export default function MainPage() {
             &gt;
           </button>
         </div>
-
-        {/* Footer Navigation */}
-        <footer className="mt-6 flex w-full justify-around bg-tertiary py-4">
-          {[1, 2, 3, 4].map((item) => (
-            <div
-              key={item}
-              className="h-8 w-8 rounded-full bg-secondary-500"
-            ></div>
-          ))}
-        </footer>
       </section>
     </main>
   );
