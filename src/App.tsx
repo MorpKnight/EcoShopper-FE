@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import DevelopmentPage from './pages/DevelopmentPage';
@@ -9,9 +9,20 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 const App: React.FC = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
   return (
     <Router>
-      <Navbar />
+      <Navbar toggleTheme={toggleTheme} theme={theme} />
       <div className="flex flex-col min-h-screen">
         <Routes>
           <Route path="/auth" element={<AuthPage />} />
