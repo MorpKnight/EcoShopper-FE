@@ -36,8 +36,8 @@ export default function MainPage() {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get('query') || '';
-    const filtered = products.filter(product =>
-      product.product_name.toLowerCase().includes(query.toLowerCase())
+    const filtered = products.filter((product) =>
+      product.product_name.toLowerCase().includes(query.toLowerCase()),
     );
     setFilteredProducts(filtered);
     setCurrentPage(1);
@@ -53,7 +53,10 @@ export default function MainPage() {
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+  const currentProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -69,7 +72,7 @@ export default function MainPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <div className="loader"></div>
           <p>Loading...</p>
@@ -79,52 +82,54 @@ export default function MainPage() {
   }
 
   return (
-    <main className="flex w-screen justify-center flex-grow">
-      <section className="flex min-h-screen w-screen max-w-screen-sm flex-col items-center bg-tertiary-light">
+    <main className="flex w-screen flex-grow justify-center overflow-x-hidden bg-tertiary-light pb-16">
+      <section className="flex min-h-screen w-full flex-col items-center bg-tertiary-light">
         {/* Product List */}
-        <div className="mt-6 w-full max-w-lg px-4">
+        <div className="mt-6 w-full max-w-4xl px-4">
           {currentProducts.length === 0 ? (
             <p className="text-center text-text-secondary">There's no data</p>
           ) : (
-            currentProducts.map((product: Product) => (
-              <div
-                key={product.id}
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => handleProductClick(product.id)}
-              >
-                {/* Product Info */}
-                <div className="mb-3 ml-6 mt-4 max-w-xs">
-                  <h2 className="text-[1.5rem] font-semibold text-text-primary">
-                    {product.product_name}
-                  </h2>
-                  <p className="max-h-16 overflow-y-auto text-text-secondary">
-                    {product.product_description}
-                  </p>
-                  <div className="flex items-center text-text-secondary">
-                    <span className="text-[1.5rem]">
-                      {product.product_sustainability_rating}★
-                    </span>
+            <div className="space-y-4">
+              {currentProducts.map((product: Product) => (
+                <div
+                  key={product.id}
+                  className="hover:bg-secondary-100 flex items-center justify-between rounded-lg border border-secondary-500 bg-white p-4 shadow-md transition hover:shadow-lg"
+                  onClick={() => handleProductClick(product.id)}
+                >
+                  {/* Product Info */}
+                  <div className="flex-1 pr-4">
+                    <h2 className="text-lg font-semibold text-text-primary">
+                      {product.product_name}
+                    </h2>
+                    <p className="mt-1 line-clamp-2 text-sm text-text-secondary">
+                      {product.product_description}
+                    </p>
+                    <div className="mt-2 flex items-center text-text-secondary">
+                      <span className="text-lg font-semibold">
+                        {product.product_sustainability_rating} ★
+                      </span>
+                    </div>
+                  </div>
+                  {/* Product Image */}
+                  <div className="h-20 w-28 overflow-hidden rounded-lg border border-secondary-300 bg-secondary-300">
+                    <img
+                      src={product.product_image}
+                      alt={product.product_name}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                 </div>
-                {/* Product Image */}
-                <div className="my-4 mr-6 h-14 w-24 overflow-hidden rounded-2xl bg-secondary-300">
-                  <img
-                    src={product.product_image}
-                    alt={product.product_name}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
 
         {/* Pagination */}
-        <div className="mt-6 flex items-center justify-center space-x-2">
+        <div className="mt-6 flex items-center justify-center space-x-2 pb-16">
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className="h-8 w-8 rounded-full bg-secondary-500"
+            className="h-10 w-10 rounded-full bg-secondary-500 font-bold text-white transition hover:bg-secondary-700 disabled:opacity-50"
           >
             &lt;
           </button>
@@ -132,7 +137,11 @@ export default function MainPage() {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`h-8 w-12 rounded-lg ${page === currentPage ? 'bg-primary' : 'bg-secondary-500'}`}
+              className={`h-10 w-10 rounded-full font-bold text-white transition ${
+                page === currentPage
+                  ? 'bg-primary hover:bg-primary-light'
+                  : 'bg-secondary-500 hover:bg-secondary-700'
+              }`}
             >
               {page}
             </button>
@@ -142,7 +151,7 @@ export default function MainPage() {
               handlePageChange(Math.min(totalPages, currentPage + 1))
             }
             disabled={currentPage === totalPages}
-            className="h-8 w-8 rounded-full bg-secondary-500"
+            className="h-10 w-10 rounded-full bg-secondary-500 font-bold text-white transition hover:bg-secondary-700 disabled:opacity-50"
           >
             &gt;
           </button>

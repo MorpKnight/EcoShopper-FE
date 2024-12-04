@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -19,13 +18,18 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md space-y-6 rounded bg-white p-8 shadow-md">
-        <h2 className="text-center text-2xl font-bold">{isLogin ? 'Login' : 'Register'}</h2>
+    <div className="flex min-h-screen items-center justify-center bg-tertiary-light">
+      <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
         {isLogin ? (
-          <LoginForm onSuccess={handleSuccess} onError={handleError} />
+          <>
+            <h2 className="text-center text-2xl font-bold text-text-primary">Login</h2>
+            <LoginForm onSuccess={handleSuccess} onError={handleError} />
+          </>
         ) : (
-          <RegisterForm onSuccess={handleSuccess} onError={handleError} />
+          <>
+            <h2 className="text-center text-2xl font-bold text-text-primary">Register</h2>
+            <RegisterForm onSuccess={handleSuccess} onError={handleError} />
+          </>
         )}
         <div className="text-center">
           <p className="text-sm">
