@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { loginEmail } from '../handler/auth.handler';
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   onSuccess: (message: string) => void;
@@ -9,12 +10,21 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const response = await loginEmail(email, password);
       onSuccess(response.message);
+
+      localStorage.setItem('role', response.message.role); 
+
+      if (response.message.role === 'admin') {
+        navigate('/admin'); 
+      } else {
+        navigate('/'); 
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         onError("Email or password doesn't match");
@@ -25,11 +35,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-tertiary-light">
+    <div className="flex w-full items-center justify-center">
       <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
-        <h2 className="text-center text-2xl font-bold text-text-primary">
-          Login
-        </h2>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="mb-2 block text-sm font-medium text-text-secondary">
@@ -40,7 +48,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring focus:ring-secondary-500"
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
             />
           </div>
           <div>
@@ -52,12 +60,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring focus:ring-secondary-500"
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
             />
           </div>
           <button
             type="submit"
-            className="w-full rounded bg-secondary-700 px-4 py-2 text-text-white hover:bg-secondary-500 focus:outline-none focus:ring focus:ring-secondary-300"
+            className="w-full rounded bg-secondary-700 px-4 py-2 text-white hover:bg-secondary-500 focus:outline-none focus:ring-2 focus:ring-secondary-300"
           >
             Login
           </button>

@@ -7,6 +7,7 @@ import FooterNavigation from './components/FooterNavigation';
 import AuthPage from './pages/AuthPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
+import AdminMainPage from './pages/AdminMainPage';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -30,6 +31,8 @@ const App: React.FC = () => {
           <Route path="/dev" element={<DevelopmentPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/admin" element={<AdminMainPage />} />
+
         </Routes>
       </div>
       <FooterNavigation />

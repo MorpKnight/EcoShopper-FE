@@ -82,7 +82,7 @@ export default function MainPage() {
   }
 
   return (
-    <main className="flex w-screen flex-grow justify-center overflow-x-hidden bg-tertiary-light pb-16">
+    <main className="flex w-screen flex-grow justify-center overflow-x-hidden bg-tertiary-light">
       <section className="flex min-h-screen w-full flex-col items-center bg-tertiary-light">
         {/* Product List */}
         <div className="mt-6 w-full max-w-4xl px-4">
@@ -125,7 +125,7 @@ export default function MainPage() {
         </div>
 
         {/* Pagination */}
-        <div className="mt-6 flex items-center justify-center space-x-2 pb-16">
+        <div className="mt-6 flex items-center justify-center space-x-2">
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}

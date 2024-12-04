@@ -20,13 +20,16 @@ const AuthPage: React.FC = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-tertiary-light">
       <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
-        <h2 className="text-center text-2xl font-bold text-text-primary">
-          {isLogin ? 'Login' : 'Register'}
-        </h2>
         {isLogin ? (
-          <LoginForm onSuccess={handleSuccess} onError={handleError} />
+          <>
+            <h2 className="text-center text-2xl font-bold text-text-primary">Login</h2>
+            <LoginForm onSuccess={handleSuccess} onError={handleError} />
+          </>
         ) : (
-          <RegisterForm onSuccess={handleSuccess} onError={handleError} />
+          <>
+            <h2 className="text-center text-2xl font-bold text-text-primary">Register</h2>
+            <RegisterForm onSuccess={handleSuccess} onError={handleError} />
+          </>
         )}
         <div className="text-center">
           <p className="text-sm text-text-secondary">

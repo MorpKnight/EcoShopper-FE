@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { registerEmail } from '../handler/auth.handler';
 
@@ -69,77 +68,86 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">
-          Email:
-        </label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200"
-        />
+    <div className="flex w-full items-center justify-center">
+      <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="mb-2 block text-sm font-medium text-text-secondary">
+              Email:
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-text-secondary">
+              Password:
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              placeholder="Enter your password"
+            />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-text-secondary">
+              Confirm Password:
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              placeholder="Confirm your password"
+            />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-text-secondary">
+              Display Name:
+            </label>
+            <input
+              type="text"
+              name="displayname"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              placeholder="Enter your display name"
+            />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-text-secondary">
+              Full Name:
+            </label>
+            <input
+              type="text"
+              name="fullname"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              placeholder="Enter your full name"
+            />
+          </div>
+          {passwordError && (
+            <p className="text-red-500 text-sm">{passwordError}</p>
+          )}
+          <button
+            type="submit"
+            className="w-full rounded bg-secondary-700 px-4 py-2 text-white hover:bg-secondary-500 focus:outline-none focus:ring-2 focus:ring-secondary-300"
+          >
+            Register
+          </button>
+        </form>
       </div>
-      <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">
-          Password:
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-          required
-          className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200"
-        />
-      </div>
-      <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">
-          Confirm Password:
-        </label>
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          required
-          className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200"
-        />
-        {passwordError && (
-          <p className="mt-2 text-sm text-red-600">{passwordError}</p>
-        )}
-      </div>
-      <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">
-          Display Name:
-        </label>
-        <input
-          type="text"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-          required
-          className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200"
-        />
-      </div>
-      <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">
-          Full Name:
-        </label>
-        <input
-          type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-          className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
-      >
-        Register
-      </button>
-    </form>
+    </div>
   );
 };
 
