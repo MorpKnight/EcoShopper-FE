@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getUserProfile, User } from '../handler/users.handler';
+import ThemeToggle from './ThemeToggle';
+import ProfilePopup from './ProfilePopup';
+import HamburgerMenu from './HamburgerMenu';
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTheme, theme }) => {
   const [search, setSearch] = useState('');
   const [showProfilePopup, setShowProfilePopup] = useState(false);
   const [userInfo, setUserInfo] = useState<User>();
   const [loadingProfile, setLoadingProfile] = useState(true);
+  const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem('token');
@@ -28,7 +32,11 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setShowProfilePopup(false);
-    navigate('/');
+    navigate('/auth');
+  };
+
+  const handleHamburgerMenuToggle = () => {
+    setShowHamburgerMenu(!showHamburgerMenu);
   };
 
   const isAuthPage = location.pathname === '/auth';
@@ -70,16 +78,13 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* Navbar */}
-      <header className="flex h-14 w-screen items-center justify-between bg-tertiary p-4 transition duration-200 hover:bg-beige">
+      <header className="flex h-14 w-full items-center justify-between bg-tertiary p-4 flex-wrap md:flex-nowrap">
         <div className="flex items-center">
-          {/* Menu Icon */}
-          <div className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center space-y-0.5 rounded-md bg-white transition duration-200">
+          <div className="flex h-8 w-8 flex-col items-center justify-center space-y-0.5 bg-white cursor-pointer md:hidden" onClick={handleHamburgerMenuToggle}>
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
           </div>
-          {/* EcoShopper Text */}
           <div
             className="ml-2 cursor-pointer select-none rounded-md px-2 py-1 text-xl font-bold text-secondary-700 transition duration-200"
             onClick={() => navigate('/')}
@@ -87,12 +92,8 @@ const Navbar: React.FC = () => {
             EcoShopper
           </div>
         </div>
-        {/* Search Bar */}
         {!isAuthPage && (
-          <form
-            onSubmit={handleSearchSubmit}
-            className="mx-4 flex w-full max-w-lg"
-          >
+          <form onSubmit={handleSearchSubmit} className="hidden md:flex w-full max-w-lg mx-4 mt-2 md:mt-0">
             <input
               type="text"
               placeholder="Search"
@@ -102,83 +103,50 @@ const Navbar: React.FC = () => {
             />
           </form>
         )}
-        {/* Profile or Login/Register */}
-        <div className="flex items-center space-x-4">
+        <div className="hidden md:flex items-center mt-2 md:mt-0">
+          <ThemeToggle toggleTheme={toggleTheme} theme={theme} />
           {token ? (
-            <div
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white transition duration-200"
-              onClick={handleProfileClick}
-            >
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white ml-4" onClick={handleProfileClick}>
               <div className="h-3 w-3 rounded-full border border-text-secondary"></div>
             </div>
           ) : (
             !isAuthPage && (
-              <button
-                onClick={() => navigate('/auth')}
-                className="h-8 rounded-full bg-secondary-700 px-4 text-white transition duration-200"
-              >
+              <button onClick={() => navigate('/auth')} className="h-8 px-4 rounded-full bg-secondary-500 text-white ml-4">
                 Login/Register
               </button>
             )
           )}
         </div>
       </header>
-      {/* Profile Popup */}
+      {!isAuthPage && (
+        <form onSubmit={handleSearchSubmit} className="flex md:hidden w-full p-4">
+          <input
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={handleSearchChange}
+            className="flex h-8 w-full items-center justify-center rounded-full bg-tertiary px-4 text-text-secondary placeholder-text-secondary shadow focus:outline-none"
+          />
+        </form>
+      )}
+      {showHamburgerMenu && (
+        <HamburgerMenu
+          toggleTheme={toggleTheme}
+          theme={theme}
+          token={token}
+          handleProfileClick={handleProfileClick}
+          handleLogout={handleLogout}
+          navigate={navigate}
+          closeMenu={handleHamburgerMenuToggle}
+        />
+      )}
       {showProfilePopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative w-96 rounded-xl bg-text-white p-8 shadow-lg">
-            <button
-              onClick={handleProfileClick}
-              className="absolute right-3 top-3 text-gray-600 hover:text-gray-800"
-            >
-              &times;
-            </button>
-            {loadingProfile ? (
-              <div className="flex h-40 items-center justify-center">
-                <div className="loader"></div>
-              </div>
-            ) : (
-              userInfo && (
-                <>
-                  <h2 className="mb-6 text-3xl font-semibold text-text-primary">
-                    User Profile
-                  </h2>
-                  {/* Profile Details */}
-                  <div className="mb-6 flex items-center">
-                    <img
-                      src={
-                        userInfo.display_picture ||
-                        'https://cdn-icons-png.freepik.com/256/1077/1077114.png?semt=ais_hybrid'
-                      }
-                      alt={userInfo.display_name}
-                      className="mr-6 h-20 w-20 rounded-full border border-gray-300"
-                    />
-                    <div>
-                      <p className="text-lg font-medium text-text-primary">
-                        {userInfo.fullname}
-                      </p>
-                      <p className="text-sm text-gray-500">{userInfo.email}</p>
-                    </div>
-                  </div>
-                  <div className="mt-8 flex justify-end space-x-4">
-                    <button
-                      onClick={handleProfileClick}
-                      className="rounded-full bg-secondary-300 px-6 py-2 text-text-secondary transition duration-200 hover:bg-secondary-500"
-                    >
-                      Close
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className="rounded-full bg-secondary-700 px-6 py-2 text-text-white transition duration-200 hover:bg-black"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </>
-              )
-            )}
-          </div>
-        </div>
+        <ProfilePopup
+          userInfo={userInfo}
+          loadingProfile={loadingProfile}
+          handleProfileClick={handleProfileClick}
+          handleLogout={handleLogout}
+        />
       )}
     </>
   );

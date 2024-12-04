@@ -1,27 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import DevelopmentPage from './pages/DevelopmentPage';
-import RegisterPage from './pages/register';
 import Navbar from './components/Navbar';
 import FooterNavigation from './components/FooterNavigation';
 import AuthPage from './pages/AuthPage';
 import ProductDetailPage from './pages/ProductDetailPage';
-import LoginPage from './pages/login';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App: React.FC = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
   return (
     <Router>
-      <Navbar />
-      <div className="flex min-h-screen flex-col">
+      <Navbar toggleTheme={toggleTheme} theme={theme} />
+      <div className="flex flex-col min-h-screen">
         <Routes>
-        <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/dev" element={<DevelopmentPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
-          <Route path="*" element={<h1>Not Found</h1>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
       <FooterNavigation />
