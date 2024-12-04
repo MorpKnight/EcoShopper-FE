@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getProducts, Product } from '../handler/goods.handler';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function MainPage() {
+export default function AdminMainPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +48,7 @@ export default function MainPage() {
   };
 
   const handleProductClick = (id: string) => {
-    navigate(`/product/${id}`);
+    navigate(`/admin/product/${id}`);
   };
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
