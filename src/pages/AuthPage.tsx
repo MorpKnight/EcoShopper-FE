@@ -10,7 +10,11 @@ const AuthPage: React.FC = () => {
 
   const handleSuccess = (message: string) => {
     toast.success(message);
-    navigate(isLogin ? '/' : '/login');
+    if (!isLogin) {
+      setIsLogin(true);
+    } else {
+      navigate('/');
+    }
   };
 
   const handleError = (message: string) => {
