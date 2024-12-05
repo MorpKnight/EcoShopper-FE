@@ -24,7 +24,7 @@ export default function ProductDetailPage() {
         throw new Error('Log in needed to purchase this product.');
       }
 
-      const response = await buyProducts(id, quantity,token);
+      const response = await buyProducts(id, quantity, token);
       toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);

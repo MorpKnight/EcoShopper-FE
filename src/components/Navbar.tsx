@@ -5,7 +5,10 @@ import ThemeToggle from './ThemeToggle';
 import ProfilePopup from './ProfilePopup';
 import HamburgerMenu from './HamburgerMenu';
 
-const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTheme, theme }) => {
+const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({
+  toggleTheme,
+  theme,
+}) => {
   const [search, setSearch] = useState('');
   const [showProfilePopup, setShowProfilePopup] = useState(false);
   const [userInfo, setUserInfo] = useState<User>();
@@ -78,9 +81,12 @@ const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTh
 
   return (
     <>
-      <header className="flex h-14 w-full items-center justify-between bg-tertiary p-4 flex-wrap md:flex-nowrap">
+      <header className="flex h-14 w-full flex-wrap items-center justify-between bg-tertiary p-4 md:flex-nowrap">
         <div className="flex items-center">
-          <div className="flex h-8 w-8 flex-col items-center justify-center space-y-0.5 bg-white cursor-pointer md:hidden" onClick={handleHamburgerMenuToggle}>
+          <div
+            className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center space-y-0.5 bg-white md:hidden"
+            onClick={handleHamburgerMenuToggle}
+          >
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
             <span className="block h-0.5 w-4 bg-text-secondary"></span>
@@ -93,7 +99,10 @@ const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTh
           </div>
         </div>
         {!isAuthPage && (
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex w-full max-w-lg mx-4 mt-2 md:mt-0">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="mx-4 mt-2 hidden w-full max-w-lg md:mt-0 md:flex"
+          >
             <input
               type="text"
               placeholder="Search"
@@ -103,15 +112,21 @@ const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTh
             />
           </form>
         )}
-        <div className="hidden md:flex items-center mt-2 md:mt-0">
+        <div className="mt-2 hidden items-center md:mt-0 md:flex">
           <ThemeToggle toggleTheme={toggleTheme} theme={theme} />
           {token ? (
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white ml-4" onClick={handleProfileClick}>
+            <div
+              className="ml-4 flex h-8 w-8 items-center justify-center rounded-full bg-white"
+              onClick={handleProfileClick}
+            >
               <div className="h-3 w-3 rounded-full border border-text-secondary"></div>
             </div>
           ) : (
             !isAuthPage && (
-              <button onClick={() => navigate('/auth')} className="h-8 px-4 rounded-full bg-secondary-500 text-white ml-4">
+              <button
+                onClick={() => navigate('/auth')}
+                className="ml-4 h-8 rounded-full bg-secondary-500 px-4 text-white"
+              >
                 Login/Register
               </button>
             )
@@ -119,7 +134,10 @@ const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTh
         </div>
       </header>
       {!isAuthPage && (
-        <form onSubmit={handleSearchSubmit} className="flex md:hidden w-full p-4">
+        <form
+          onSubmit={handleSearchSubmit}
+          className="flex w-full p-4 md:hidden"
+        >
           <input
             type="text"
             placeholder="Search"

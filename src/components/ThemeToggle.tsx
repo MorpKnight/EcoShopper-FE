@@ -1,15 +1,20 @@
 import React from 'react';
 
-const ThemeToggle: React.FC<{ toggleTheme: () => void; theme: string }> = ({ toggleTheme, theme }) => {
+const ThemeToggle: React.FC<{ toggleTheme: () => void; theme: string }> = ({
+  toggleTheme,
+  theme,
+}) => {
   return (
     <button
       onClick={toggleTheme}
-      className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-800 transition-colors duration-300 relative w-14 h-8"
+      className="relative ml-4 h-8 w-14 rounded-full bg-gray-200 p-2 transition-colors duration-300 dark:bg-gray-800"
       aria-label="Toggle Theme"
     >
       <span
-        className={`absolute top-0.5 left-0.5 w-7 h-7 rounded-full transition-transform duration-300 flex items-center justify-center text-lg ${
-          theme === 'light' ? 'translate-x-0 bg-yellow-500' : 'translate-x-6 bg-gray-200'
+        className={`absolute left-0.5 top-0.5 flex h-7 w-7 items-center justify-center rounded-full text-lg transition-transform duration-300 ${
+          theme === 'light'
+            ? 'translate-x-0 bg-yellow-500'
+            : 'translate-x-6 bg-gray-200'
         }`}
       >
         {theme === 'light' ? '☀️' : '🌙'}
