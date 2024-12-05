@@ -172,7 +172,7 @@ export default function ProductTable({ searchQuery }: { searchQuery: string }) {
   );
 
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-y-4 overflow-hidden rounded-[1rem] border border-text-tertiary bg-tertiary-light">
+    <div className="flex w-full flex-col items-center justify-center gap-y-4 overflow-hidden rounded-[1rem] border border-text-tertiary bg-tertiary-light shadow">
       {paginatedProducts.length > 0 ? (
         paginatedProducts.map((product) => (
           <ProductRow
