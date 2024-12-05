@@ -14,6 +14,9 @@ export const addProduct = async (
   image: string,
   sustainability_rating: string,
   producer_id: string,
+  product_type: string,
+  is_organic: boolean,
+  food_subcategory: string,
 ) => {
   const response = await axios.post(
     `${BE_URI}/admin/add-product`,
@@ -25,6 +28,9 @@ export const addProduct = async (
       image,
       sustainability_rating,
       producer_id,
+      product_type, 
+      is_organic, 
+      food_subcategory
     },
     {
       headers: { cookies: `token=${getToken()}` },
