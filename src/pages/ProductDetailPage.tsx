@@ -55,17 +55,19 @@ export default function ProductDetailPage() {
     const fetchAlternative = async () => {
       // TODO
       setAlternative({
-        id: '54cd4305-4df8-45b7-a6b0-acb3f5bd2406',
-        product_name: 'Alternative Product',
-        product_description: 'This is an alternative product.',
-        product_category: 'category',
-        product_price: 10,
-        product_image: 'https://picsum.photos/500',
-        product_sustainability_rating: 5,
-        product_producer_id: '1',
+        id: '00d1b5fb-a7bf-4ecf-9ccb-8f3e394934cd',
+        product_name: 'Mie Nongshim Shin Ramyun',
+        product_description:
+          'A bold and spicy instant noodle soup that is loved by spice enthusiasts worldwide.',
+        product_category: 'snacks',
+        product_price: 3.75,
+        product_image: 'http://cdn.digilabdte.com/u/Wd3rV1.jpg',
+        product_sustainability_rating: 4.5,
+        product_producer_id: 'b01f6108-75c9-451c-a167-383c7fc5cd4a',
         product_type: 'food',
-        is_organic: true,
-        created_at: '2022-01-01',
+        is_organic: false,
+        food_subcategory: 'noodles_pasta',
+        created_at: '2024-12-05T07:07:31.496Z',
       });
     };
 
@@ -142,7 +144,7 @@ export default function ProductDetailPage() {
               className="rounded-full border-2 border-secondary-700 bg-secondary-500 px-2 py-1 text-white"
               onClick={handleSeeMoreAlternatives}
             >
-              See More Alternatives
+              More Alternatives
             </button>
           </div>
           <div className="w-full overflow-hidden rounded-[1rem] border border-text-primary shadow">

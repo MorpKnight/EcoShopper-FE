@@ -13,6 +13,7 @@ const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({
   const [showProfilePopup, setShowProfilePopup] = useState(false);
   const [userInfo, setUserInfo] = useState<User>();
   const [loadingProfile, setLoadingProfile] = useState(true);
+  
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem('token');

@@ -65,27 +65,22 @@ export const editProduct = async (
   category: string,
   price: string,
   image: string,
-  sustainability_rating: string,
+  sustainability_rating: number,
   producer_id: string,
+  product_type: string,
+  is_organic: boolean,
+  food_subcategory: string
 ) => {
   const response = await axios.put(
     `${BE_URI}/admin/edit-product`,
     {
-      id,
-      name,
-      description,
-      category,
-      price,
-      image,
-      sustainability_rating,
-      producer_id,
+      id, name, description, category, price, image, sustainability_rating, producer_id, product_type, is_organic, food_subcategory
     },
     {
-      headers: { cookies: `token=${getToken()}` },
+      headers: { cookies: `token=${getToken()}`},
     },
   );
   if (response.status !== 200) throw new Error(response.data.error);
-
   return response.data;
 };
 

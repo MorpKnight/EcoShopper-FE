@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getProducts, Product } from '../handler/goods.handler';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getProducts, Product } from '../handler/goods.handler';
 
 export default function AdminMainPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -47,8 +47,8 @@ export default function AdminMainPage() {
     setCurrentPage(page);
   };
 
-  const handleProductClick = (id: string) => {
-    navigate(`/admin/product/${id}`);
+  const handleAddProduct = () => {
+    navigate('/admin/add-product');
   };
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -84,6 +84,17 @@ export default function AdminMainPage() {
   return (
     <main className="flex w-screen flex-grow justify-center overflow-x-hidden bg-tertiary-light">
       <section className="flex min-h-screen w-full flex-col items-center bg-tertiary-light">
+        {/* Add Product Button */}
+        <div className="mt-6 flex w-full max-w-4xl justify-between px-4">
+          <h1 className="text-xl font-bold text-gray-800">Manage Products</h1>
+          <button
+            onClick={handleAddProduct}
+            className="rounded bg-black px-4 py-2 text-white hover:bg-black"
+          >
+            Add Product
+          </button>
+        </div>
+
         {/* Product List */}
         <div className="mt-6 w-full max-w-4xl px-4">
           {currentProducts.length === 0 ? (
@@ -94,10 +105,12 @@ export default function AdminMainPage() {
                 <div
                   key={product.id}
                   className="hover:bg-secondary-100 flex items-center justify-between rounded-lg border border-secondary-500 bg-white p-4 shadow-md transition hover:shadow-lg"
-                  onClick={() => handleProductClick(product.id)}
                 >
                   {/* Product Info */}
-                  <div className="flex-1 pr-4">
+                  <div
+                    className="flex-1 cursor-pointer pr-4"
+                    onClick={() => navigate(`/admin/product/${product.id}`)}
+                  >
                     <h2 className="text-lg font-semibold text-text-primary">
                       {product.product_name}
                     </h2>

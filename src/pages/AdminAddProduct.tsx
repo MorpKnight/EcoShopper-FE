@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { editProduct } from '../handler/admin.handler';
+import { useNavigate } from 'react-router-dom';
+import { addProduct } from '../handler/admin.handler';
 import { toast } from 'react-toastify';
 
-const AdminEditPage: React.FC = () => {
-  const [image, setImage] = useState<File | null>(null);
+const AddProductPage: React.FC = () => {
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [category, setCategory] = useState('');
@@ -13,16 +12,10 @@ const AdminEditPage: React.FC = () => {
   const [productType, setProductType] = useState('food');
   const [isOrganic, setIsOrganic] = useState(false);
   const [foodSubcategory, setFoodSubcategory] = useState('');
-  const [ratings, setRatings] = useState({
-    kategori1: 3.2,
-    kategori2: 3.2,
-    kategori3: 3.2,
-    kategori4: 3.2,
-    kategori5: 3.2,
-  });
+  const [sustainabilityRating, setSustainabilityRating] = useState<number>(5);
+  const [image, setImage] = useState<File | null>(null);
 
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -31,38 +24,23 @@ const AdminEditPage: React.FC = () => {
     }
   };
 
-  const handleRatingChange = (key: string, value: number) => {
-    setRatings({ ...ratings, [key]: value });
-  };
-
   const handleSubmit = async () => {
     try {
-      if (!id) throw new Error('Product ID is missing.');
-
-      const sustainabilityRating =
-        Object.values(ratings).reduce((a, b) => a + b, 0) /
-        Object.values(ratings).length;
-
       const imageData = image ? URL.createObjectURL(image) : '';
 
-      toast.info('Attempting to update product...');
-
-      await editProduct(
-        id,
+      toast.info('Adding new product...');
+      await addProduct(
         productName,
         productDescription,
         category,
         price,
         imageData,
-        sustainabilityRating,
-        producerId,
-        productType,
-        isOrganic,
-        foodSubcategory
+        sustainabilityRating.toString(),
+        producerId
       );
 
-      toast.success('Product updated successfully!');
-      navigate(`/admin/product/${id}`);
+      toast.success('Product added successfully!');
+      navigate('/admin');
     } catch (error: any) {
       toast.error(`Error: ${error.message}`);
       console.error('Error during handleSubmit:', error);
@@ -70,32 +48,14 @@ const AdminEditPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate(`/admin/product/${id}`);
+    navigate('/admin');
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-tertiary-light px-6">
       <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg pb-20">
-        <div className="mb-6 flex flex-col items-center">
-          <img
-            src={
-              image
-                ? URL.createObjectURL(image)
-                : 'https://via.placeholder.com/150'
-            }
-            alt="Product"
-            className="mb-4 h-32 w-32 rounded-lg object-cover"
-          />
-          <label className="cursor-pointer rounded-lg bg-secondary-500 px-4 py-2 text-white hover:bg-secondary-700">
-            Choose File
-            <input
-              type="file"
-              onChange={handleImageChange}
-              className="hidden"
-            />
-          </label>
-        </div>
-
+        <h1 className="mb-6 text-2xl font-bold text-gray-800">Add Product</h1>
+        {/* Product Name */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Product Name
@@ -107,7 +67,7 @@ const AdminEditPage: React.FC = () => {
             className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
           />
         </div>
-
+        {/* Product Description */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Product Description
@@ -119,7 +79,7 @@ const AdminEditPage: React.FC = () => {
             className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
           />
         </div>
-
+        {/* Category */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Category
@@ -131,7 +91,7 @@ const AdminEditPage: React.FC = () => {
             className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
           />
         </div>
-
+        {/* Price */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Price
@@ -143,7 +103,7 @@ const AdminEditPage: React.FC = () => {
             className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
           />
         </div>
-
+        {/* Producer ID */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Producer ID
@@ -155,7 +115,7 @@ const AdminEditPage: React.FC = () => {
             className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
           />
         </div>
-
+        {/* Product Type */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Product Type
@@ -169,7 +129,7 @@ const AdminEditPage: React.FC = () => {
             <option value="non-food">Non-Food</option>
           </select>
         </div>
-
+        {/* Is Organic */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Is Organic
@@ -181,7 +141,7 @@ const AdminEditPage: React.FC = () => {
             className="rounded-lg border border-secondary-300"
           />
         </div>
-
+        {/* Food Subcategory */}
         <div className="mb-4">
           <label className="mb-2 block font-semibold text-text-secondary">
             Food Subcategory
@@ -193,30 +153,33 @@ const AdminEditPage: React.FC = () => {
             className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
           />
         </div>
-
-        <div className="mb-6">
-          <label className="mb-4 block font-semibold text-text-secondary">
-            Rating
+        {/* Sustainability Rating */}
+        <div className="mb-4">
+          <label className="mb-2 block font-semibold text-text-secondary">
+            Sustainability Rating
           </label>
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(ratings).map(([key, value]) => (
-              <div key={key} className="flex items-center justify-between">
-                <span className="text-text-secondary">
-                  {key.replace('kategori', 'Kategori ')}
-                </span>
-                <input
-                  type="number"
-                  value={value}
-                  onChange={(e) =>
-                    handleRatingChange(key, parseFloat(e.target.value))
-                  }
-                  className="w-16 rounded-lg border border-secondary-300 bg-tertiary-light text-center text-text-primary focus:outline-none"
-                />
-              </div>
-            ))}
-          </div>
+          <input
+            type="number"
+            value={sustainabilityRating}
+            onChange={(e) => setSustainabilityRating(Number(e.target.value))}
+            min="0"
+            max="10"
+            step="0.1"
+            className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
+          />
         </div>
-
+        {/* Image */}
+        <div className="mb-4">
+          <label className="mb-2 block font-semibold text-text-secondary">
+            Product Image
+          </label>
+          <input
+            type="file"
+            onChange={handleImageChange}
+            className="w-full rounded-lg border border-secondary-300 bg-tertiary-light px-4 py-2 text-text-primary focus:outline-none"
+          />
+        </div>
+        {/* Buttons */}
         <div className="flex justify-between">
           <button
             onClick={handleCancel}
@@ -228,7 +191,7 @@ const AdminEditPage: React.FC = () => {
             onClick={handleSubmit}
             className="rounded-lg bg-secondary-500 px-6 py-2 text-white hover:bg-secondary-700"
           >
-            Confirm
+            Add Product
           </button>
         </div>
       </div>
@@ -236,4 +199,4 @@ const AdminEditPage: React.FC = () => {
   );
 };
 
-export default AdminEditPage;
+export default AddProductPage;
