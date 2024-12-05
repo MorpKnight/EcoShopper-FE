@@ -4,6 +4,7 @@ import { getProduct, Product } from '../handler/goods.handler';
 import { buyProducts } from '../handler/users.handler';
 import { toast } from 'react-toastify';
 import ProductRow from '../components/ProductTable/ProductRow';
+import RadarChart from '../components/Charts/RadarChart';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -123,6 +124,17 @@ export default function ProductDetailPage() {
             </button>
           </div>
         </section>
+
+        <div className="mb-8 flex w-full gap-x-2">
+          <section className="w-1/2 rounded-lg bg-white p-4 shadow-md">
+            <h3 className="bold mb-2 text-lg">Details</h3>
+            <p>{product.product_description}</p>
+          </section>
+          <section className="w-1/2 rounded-lg bg-white p-4 shadow-md">
+            {/* TODO: product gak ada rating dibagi per kategori  */}
+            <RadarChart title="Sustainability" data={[10, 20, 15, 4, 5]} />
+          </section>
+        </div>
 
         <section className="flex w-full flex-col gap-y-4">
           <div className="flex justify-end">
