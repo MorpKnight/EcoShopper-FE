@@ -16,7 +16,10 @@ export default function ProductRow({
   const navigate = useNavigate();
 
   const handleProductClick = (id: string) => {
-    if (!id) return;
+    if (!id) {
+      return;
+    }
+
     navigate(`/product/${id}`);
   };
 
@@ -25,8 +28,8 @@ export default function ProductRow({
       className={`flex w-full items-center justify-between ${!dontShowTopBorder && 'border-t border-y-text-tertiary'} cursor-pointer font-inter`}
       onClick={() => handleProductClick(id || '')}
     >
-      <div className="mb-3 ml-6 mt-4">
-        <h2 className="line-clamp-1 text-[1.5rem] leading-7 text-text-secondary">
+      <div className="mb-3 ml-6 mt-4 w-3/5">
+        <h2 className="line-clamp-1 text-[1.25rem] leading-7 text-text-secondary">
           {product}
         </h2>
         <div className="flex items-center">
