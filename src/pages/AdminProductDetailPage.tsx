@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect  } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getProduct, Product } from '../handler/goods.handler';
 import { buyProducts } from '../handler/users.handler';
 import { toast } from 'react-toastify';
+import { FaEdit } from 'react-icons/fa';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,13 @@ export default function ProductDetailPage() {
   const [isAddToHistoryOpen, setAddToHistoryOpen] = useState(false);
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev));
+  const navigate = useNavigate();
+
+  const handleEditClick = () => {
+    if (id) {
+      navigate(`/admin/product/${id}/edit`);
+    }
+  };
 
   const handleBuyProduct = async () => {
     try {
@@ -24,7 +32,7 @@ export default function ProductDetailPage() {
         throw new Error('Log in needed to purchase this product.');
       }
 
-      const response = await buyProducts(id, quantity,token);
+      const response = await buyProducts(id, quantity, token);
       toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
@@ -74,6 +82,13 @@ export default function ProductDetailPage() {
             alt={product.product_type || 'Product'}
             className="mb-4 w-full rounded-lg object-cover"
           />
+          <button
+            onClick={handleEditClick}
+            className="absolute right-4 top-4 rounded-full bg-secondary-700 p-2 text-white transition hover:bg-secondary-500"
+            title="Edit Product"
+          >
+            <FaEdit size={20} />
+          </button>
           <h1 className="mb-2 text-2xl font-bold text-gray-800">
             {product.product_name || 'Product Name'}
           </h1>

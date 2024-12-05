@@ -123,7 +123,7 @@ const AdminEditPage: React.FC = () => {
         <div className="flex justify-between">
           <button
             onClick={handleCancel}
-            className="bg-beige rounded-lg border border-secondary-300 px-6 py-2 text-text-secondary hover:bg-secondary-300 hover:text-text-white"
+            className="rounded-lg border border-secondary-300 bg-beige px-6 py-2 text-text-secondary hover:bg-secondary-300 hover:text-text-white"
           >
             Cancel
           </button>

@@ -1,13 +1,13 @@
-import { FaUser, FaInfoCircle, FaHome } from "react-icons/fa";
+import { FaUser, FaInfoCircle, FaHome } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 export default function FooterNavigation() {
   const navigate = useNavigate();
   return (
-    <footer className="flex w-full justify-around items-center bg-tertiary h-14 fixed bottom-0 z-50 border-t border-secondary-300 shadow-lg">
+    <footer className="fixed bottom-0 z-50 flex h-14 w-full items-center justify-around border-t border-secondary-300 bg-tertiary shadow-lg">
       {/* Profile Icon */}
       <button
-        className="flex items-center justify-center h-10 w-10 rounded-full bg-secondary-500 text-text-white hover:bg-secondary-700 transition-colors duration-300"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary-500 text-text-white transition-colors duration-300 hover:bg-secondary-700"
         aria-label="Profile"
       >
         <FaUser className="h-5 w-5" />
@@ -15,8 +15,8 @@ export default function FooterNavigation() {
 
       {/* Home Icon */}
       <button
-        onClick={() => navigate("/")}
-        className="flex items-center justify-center h-12 w-12 rounded-full bg-secondary-500 text-text-white hover:bg-secondary-700 transition-transform transform hover:scale-110"
+        onClick={() => navigate('/')}
+        className="flex h-12 w-12 transform items-center justify-center rounded-full bg-secondary-500 text-text-white transition-transform hover:scale-110 hover:bg-secondary-700"
         aria-label="Home"
       >
         <FaHome className="h-6 w-6" />
@@ -24,7 +24,7 @@ export default function FooterNavigation() {
 
       {/* Info Icon */}
       <button
-        className="flex items-center justify-center h-10 w-10 rounded-full bg-secondary-500 text-text-white hover:bg-secondary-700 transition-colors duration-300"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary-500 text-text-white transition-colors duration-300 hover:bg-secondary-700"
         aria-label="Info"
       >
         <FaInfoCircle className="h-5 w-5" />

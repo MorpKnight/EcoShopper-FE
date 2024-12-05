@@ -16,6 +16,7 @@ import AdminMainPage from './pages/AdminMainPage';
 import NavbarAdmin from './components/NavbarAdmin';
 import AdminProductDetailPage from './pages/AdminProductDetailPage';
 import AdminEditPage from './pages/AdminEditPage';
+import AlternativePage from './pages/AlternativePage';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -55,6 +56,7 @@ const App: React.FC = () => {
               path="/admin/product/:id"
               element={<AdminProductDetailPage />}
             />
+            <Route path="/alternatives/:id" element={<AlternativePage />} />
             <Route path="/admin/product/:id/edit" element={<AdminEditPage />} />
           </Routes>
         </div>

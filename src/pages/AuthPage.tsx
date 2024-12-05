@@ -22,12 +22,16 @@ const AuthPage: React.FC = () => {
       <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
         {isLogin ? (
           <>
-            <h2 className="text-center text-2xl font-bold text-text-primary">Login</h2>
+            <h2 className="text-center text-2xl font-bold text-text-primary">
+              Login
+            </h2>
             <LoginForm onSuccess={handleSuccess} onError={handleError} />
           </>
         ) : (
           <>
-            <h2 className="text-center text-2xl font-bold text-text-primary">Register</h2>
+            <h2 className="text-center text-2xl font-bold text-text-primary">
+              Register
+            </h2>
             <RegisterForm onSuccess={handleSuccess} onError={handleError} />
           </>
         )}
