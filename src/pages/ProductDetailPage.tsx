@@ -1,17 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getProduct, Product } from '../handler/goods.handler';
 import { buyProducts } from '../handler/users.handler';
 import { toast } from 'react-toastify';
+import ProductRow from '../components/ProductTable/ProductRow';
+import RadarChart from '../components/Charts/RadarChart';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
+
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isAddToHistoryOpen, setAddToHistoryOpen] = useState(false);
+  const [alternative, setAlternative] = useState<Product>();
+
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev));
+
+  const navigate = useNavigate();
 
   const handleBuyProduct = async () => {
     try {
@@ -24,12 +31,13 @@ export default function ProductDetailPage() {
         throw new Error('Log in needed to purchase this product.');
       }
 
-      const response = await buyProducts(id, quantity,token);
+      const response = await buyProducts(id, quantity, token);
       toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
     }
   };
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -43,8 +51,32 @@ export default function ProductDetailPage() {
         setLoading(false);
       }
     };
+
+    const fetchAlternative = async () => {
+      // TODO
+      setAlternative({
+        id: '54cd4305-4df8-45b7-a6b0-acb3f5bd2406',
+        product_name: 'Alternative Product',
+        product_description: 'This is an alternative product.',
+        product_category: 'category',
+        product_price: 10,
+        product_image: 'https://picsum.photos/500',
+        product_sustainability_rating: 5,
+        product_producer_id: '1',
+        product_type: 'food',
+        is_organic: true,
+        created_at: '2022-01-01',
+      });
+    };
+
     fetchProduct();
+    fetchAlternative();
   }, [id]);
+
+  const handleSeeMoreAlternatives = () => {
+    // TODO
+    navigate(`/alternatives/${product?.id}`);
+  };
 
   if (loading) {
     return (
@@ -68,7 +100,7 @@ export default function ProductDetailPage() {
   return (
     <div className="flex min-h-screen w-screen flex-col overflow-hidden bg-tertiary-light">
       <main className="mx-auto w-full max-w-screen-lg flex-grow px-4 py-6 pb-28">
-        <section className="w-full rounded-lg bg-white p-4 shadow-md">
+        <section className="mb-8 w-full rounded-lg bg-white p-4 shadow-md">
           <img
             src={product.product_image || 'https://via.placeholder.com/64'}
             alt={product.product_type || 'Product'}
@@ -90,6 +122,41 @@ export default function ProductDetailPage() {
             >
               Add to History
             </button>
+          </div>
+        </section>
+
+        <div className="mb-8 flex w-full gap-x-2">
+          <section className="w-1/2 rounded-lg bg-white p-4 shadow-md">
+            <h3 className="bold mb-2 text-lg">Details</h3>
+            <p>{product.product_description}</p>
+          </section>
+          <section className="w-1/2 rounded-lg bg-white p-4 shadow-md">
+            {/* TODO: product gak ada rating dibagi per kategori  */}
+            <RadarChart title="Sustainability" data={[10, 20, 15, 4, 5]} />
+          </section>
+        </div>
+
+        <section className="flex w-full flex-col gap-y-4">
+          <div className="flex justify-end">
+            <button
+              className="rounded-full border-2 border-secondary-700 bg-secondary-500 px-2 py-1 text-white"
+              onClick={handleSeeMoreAlternatives}
+            >
+              See More Alternatives
+            </button>
+          </div>
+          <div className="w-full overflow-hidden rounded-[1rem] border border-text-primary shadow">
+            <ProductRow
+              product={alternative?.product_name || 'No Alternative'}
+              rating={
+                alternative?.product_sustainability_rating.toString() || '-'
+              }
+              imagesource={
+                alternative?.product_image || 'https://via.placeholder.com/64'
+              }
+              dontShowTopBorder
+              id={alternative?.id || ''}
+            />
           </div>
         </section>
       </main>

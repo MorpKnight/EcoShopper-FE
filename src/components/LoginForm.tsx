@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { loginEmail } from '../handler/auth.handler';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onSuccess: (message: string) => void;
@@ -18,12 +18,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
       const response = await loginEmail(email, password);
       onSuccess(response.message);
 
-      localStorage.setItem('role', response.message.role); 
+      localStorage.setItem('role', response.message.role);
 
       if (response.message.role === 'admin') {
-        navigate('/admin'); 
+        navigate('/admin');
       } else {
-        navigate('/'); 
+        navigate('/');
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -37,7 +37,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
   return (
     <div className="flex w-full items-center justify-center">
       <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
-
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="mb-2 block text-sm font-medium text-text-secondary">

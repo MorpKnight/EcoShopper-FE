@@ -1,6 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-const BE_URI = import.meta.env.VITE_BE_URI || "https://personal-ecoshopper-be.dzlfwq.easypanel.host";
+const BE_URI =
+  import.meta.env.VITE_BE_URI ||
+  'https://personal-ecoshopper-be.dzlfwq.easypanel.host';
 
 export interface Product {
   id: string;
@@ -19,51 +21,53 @@ export interface Product {
 
 export const getProducts = async (): Promise<Product[]> => {
   const response = await axios.get(`${BE_URI}/goods`);
-  if(response.status !== 200) throw new Error(response.data.error);
+  if (response.status !== 200) throw new Error(response.data.error);
 
   console.log('Fetched products:', response.data);
   return response.data.goods;
-}
+};
 
 export const getProduct = async (id: string): Promise<Product> => {
   const response = await axios.get(`${BE_URI}/goods/${id}`);
-  if(response.status !== 200) throw new Error(response.data.error);
+  if (response.status !== 200) throw new Error(response.data.error);
 
   console.log('Fetched product:', response.data.good);
   return response.data.good;
-}
+};
 
 export const getGoodsByCategory = async (category: string) => {
   const response = await axios.get(`${BE_URI}/goods/category/${category}`);
-  if(response.status !== 200) throw new Error(response.data.error);
+  if (response.status !== 200) throw new Error(response.data.error);
 
   return response.data;
-}
+};
 
 export const getGoodsByName = async (name: string) => {
   const response = await axios.get(`${BE_URI}/goods/name/${name}`);
-  if(response.status !== 200) throw new Error(response.data.error);
+  if (response.status !== 200) throw new Error(response.data.error);
 
   return response.data;
-}
+};
 
 export const getGoodsBySR = async (sr: string) => {
   const response = await axios.get(`${BE_URI}/goods/sr/${sr}`);
-  if(response.status !== 200) throw new Error(response.data.error);
+  if (response.status !== 200) throw new Error(response.data.error);
 
   return response.data;
-}
+};
 
 export const getGoodsByProducer = async (producer: string) => {
   const response = await axios.get(`${BE_URI}/goods/producer/${producer}`);
-  if(response.status !== 200) throw new Error(response.data.error);
+  if (response.status !== 200) throw new Error(response.data.error);
 
   return response.data;
-}
+};
 
 export const goodsAlternative = async (alternative: string) => {
-  const response = await axios.get(`${BE_URI}/goods/alternative/${alternative}`);
-  if(response.status !== 200) throw new Error(response.data.error);
+  const response = await axios.get(
+    `${BE_URI}/goods/alternative/${alternative}`,
+  );
+  if (response.status !== 200) throw new Error(response.data.error);
 
   return response.data;
-}
+};

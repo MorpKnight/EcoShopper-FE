@@ -18,10 +18,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
     const hasLowercase = /[a-z]/.test(password);
     const hasUppercase = /[A-Z]/.test(password);
     const hasNumber = /\d/.test(password);
-    const hasSequentialNumbers = /(012|123|234|345|456|567|678|789)/.test(password);
+    const hasSequentialNumbers = /(012|123|234|345|456|567|678|789)/.test(
+      password,
+    );
 
     if (!hasLowercase || !hasUppercase || !hasNumber || hasSequentialNumbers) {
-      return "Password must contain lowercase, uppercase, and numbers, and should not contain sequential numbers";
+      return 'Password must contain lowercase, uppercase, and numbers, and should not contain sequential numbers';
     }
     return '';
   };
@@ -39,7 +41,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
     }
   };
 
-  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const newConfirmPassword = e.target.value;
     setConfirmPassword(newConfirmPassword);
     if (password && newConfirmPassword !== password) {
@@ -56,11 +60,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
       return;
     }
     try {
-      const response = await registerEmail(email, password, displayName, fullName);
+      const response = await registerEmail(
+        email,
+        password,
+        displayName,
+        fullName,
+      );
       onSuccess(response.message);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        onError("Registration failed");
+        onError('Registration failed');
       } else {
         onError('An unknown error occurred');
       }
@@ -137,7 +146,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
             />
           </div>
           {passwordError && (
-            <p className="text-red-500 text-sm">{passwordError}</p>
+            <p className="text-sm text-red-500">{passwordError}</p>
           )}
           <button
             type="submit"

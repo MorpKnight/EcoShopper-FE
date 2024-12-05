@@ -18,7 +18,7 @@ export default function AdminProductDetailPage() {
 
   const handleEditClick = () => {
     if (id) {
-      navigate(`/admin/product/${id}/edit`); 
+      navigate(`/admin/product/${id}/edit`);
     }
   };
 
@@ -33,7 +33,7 @@ export default function AdminProductDetailPage() {
         throw new Error('Log in needed to purchase this product.');
       }
 
-      const response = await buyProducts(id, quantity,token);
+      const response = await buyProducts(id, quantity, token);
       toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
@@ -85,7 +85,7 @@ export default function AdminProductDetailPage() {
           />
           <button
             onClick={handleEditClick}
-            className="absolute top-4 right-4 rounded-full bg-secondary-700 p-2 text-white transition hover:bg-secondary-500"
+            className="absolute right-4 top-4 rounded-full bg-secondary-700 p-2 text-white transition hover:bg-secondary-500"
             title="Edit Product"
           >
             <FaEdit size={20} />

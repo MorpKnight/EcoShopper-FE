@@ -1,14 +1,30 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function ProductRow({
   product,
   rating,
   imagesource,
+  dontShowTopBorder,
+  id,
 }: {
   product: string;
   rating: string;
   imagesource: string;
+  dontShowTopBorder?: boolean;
+  id?: string;
 }) {
+  const navigate = useNavigate();
+
+  const handleProductClick = (id: string) => {
+    if (!id) return;
+    navigate(`/product/${id}`);
+  };
+
   return (
-    <div className="font-inter flex w-full items-center justify-between border-t border-y-text-tertiary">
+    <div
+      className={`flex w-full items-center justify-between ${!dontShowTopBorder && 'border-t border-y-text-tertiary'} cursor-pointer font-inter`}
+      onClick={() => handleProductClick(id || '')}
+    >
       <div className="mb-3 ml-6 mt-4">
         <h2 className="line-clamp-1 text-[1.5rem] leading-7 text-text-secondary">
           {product}
