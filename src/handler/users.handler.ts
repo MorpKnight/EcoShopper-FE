@@ -43,7 +43,7 @@ export const buyProducts = async (
       quantity,
     },
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { cookies: `token=${token}` },
     },
   );
   if (response.status !== 200) throw new Error(response.data.error);

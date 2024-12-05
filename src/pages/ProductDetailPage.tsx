@@ -26,7 +26,7 @@ export default function ProductDetailPage() {
         throw new Error('Product ID needed.');
       }
 
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('Log in needed to purchase this product.');
       }

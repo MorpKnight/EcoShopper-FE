@@ -83,7 +83,7 @@ export default function MainPage() {
 
   return (
     <main className="flex w-screen flex-grow justify-center overflow-x-hidden bg-tertiary-light pb-16">
-      <section className="flex min-h-screen w-full flex-col items-center bg-tertiary-light">
+      <section className="flex min-h-screen w-full flex-col items-center bg-tertiary-light pb-16">
         {/* Product List */}
         <div className="mt-6 w-full max-w-4xl px-4">
           {currentProducts.length === 0 ? (
