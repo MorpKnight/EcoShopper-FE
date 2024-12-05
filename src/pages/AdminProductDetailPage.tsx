@@ -3,10 +3,8 @@ import { useParams } from 'react-router-dom';
 import { getProduct, Product } from '../handler/goods.handler';
 import { buyProducts } from '../handler/users.handler';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { FaEdit } from 'react-icons/fa';
 
-export default function AdminProductDetailPage() {
+export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -14,13 +12,6 @@ export default function AdminProductDetailPage() {
   const [isAddToHistoryOpen, setAddToHistoryOpen] = useState(false);
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev));
-  const navigate = useNavigate();
-
-  const handleEditClick = () => {
-    if (id) {
-      navigate(`/admin/product/${id}/edit`); 
-    }
-  };
 
   const handleBuyProduct = async () => {
     try {
@@ -83,13 +74,6 @@ export default function AdminProductDetailPage() {
             alt={product.product_type || 'Product'}
             className="mb-4 w-full rounded-lg object-cover"
           />
-          <button
-            onClick={handleEditClick}
-            className="absolute top-4 right-4 rounded-full bg-secondary-700 p-2 text-white transition hover:bg-secondary-500"
-            title="Edit Product"
-          >
-            <FaEdit size={20} />
-          </button>
           <h1 className="mb-2 text-2xl font-bold text-gray-800">
             {product.product_name || 'Product Name'}
           </h1>

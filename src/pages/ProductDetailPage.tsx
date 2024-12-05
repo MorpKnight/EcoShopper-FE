@@ -10,26 +10,45 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isAddToHistoryOpen, setAddToHistoryOpen] = useState(false);
-  const incrementQuantity = () => setQuantity((prev) => prev + 1);
-  const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev));
+
+  const incrementQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decrementQuantity = () => {
+    setQuantity((prev) => {
+      if (prev > 1) {
+        return prev - 1;
+      } else {
+        toast.error('Quantity cannot be less than 1.');
+        return prev;
+      }
+    });
+  };
 
   const handleBuyProduct = async () => {
     try {
       if (!id) {
-        throw new Error('Product ID needed.');
+        toast.error('Product ID needed.');
+        return;
       }
 
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Log in needed to purchase this product.');
+        toast.error('Log in needed to purchase this product.');
+        return;
       }
 
-      const response = await buyProducts(id, quantity,token);
+      console.log('Formatted Token for cookies:', `token=${token}`);
+
+      const response = await buyProducts(id, quantity, token);
       toast.success(response.message);
     } catch (error: any) {
-      toast.error(error.message);
+      console.error('Error in handleBuyProduct:', error);
+      toast.error(error.message || 'Something went wrong.');
     }
   };
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -120,14 +139,14 @@ export default function ProductDetailPage() {
             <div className="mb-6 flex items-center justify-center gap-4">
               <button
                 onClick={decrementQuantity}
-                className="h-10 w-10 rounded-full bg-secondary-300 font-bold text-gray-700 transition hover:bg-secondary-500"
+                className="bg-brown-500 hover:bg-brown-600 h-10 w-10 rounded-full font-bold text-black transition"
               >
                 -
               </button>
-              <span className="text-xl font-bold">{quantity}</span>
+              <span className="text-xl font-bold text-black">{quantity}</span>
               <button
                 onClick={incrementQuantity}
-                className="h-10 w-10 rounded-full bg-secondary-300 font-bold text-gray-700 transition hover:bg-secondary-500"
+                className="bg-brown-500 hover:bg-brown-600 h-10 w-10 rounded-full font-bold text-black transition"
               >
                 +
               </button>

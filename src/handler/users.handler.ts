@@ -1,9 +1,11 @@
-import axios from "axios";
-import { Product } from "./goods.handler";
+import axios from 'axios';
+import { Product } from './goods.handler';
 
-const BE_URI = import.meta.env.VITE_BE_URI || "https://personal-ecoshopper-be.dzlfwq.easypanel.host";
+const BE_URI =
+  import.meta.env.VITE_BE_URI ||
+  'https://personal-ecoshopper-be.dzlfwq.easypanel.host';
 
-const getToken = () => localStorage.getItem("token");
+const getToken = () => localStorage.getItem('token');
 
 export interface User {
   display_name: string;
@@ -16,26 +18,35 @@ export interface User {
 }
 
 interface getUserProfileResponse {
-    user: User;
-    products: Product[];
+  user: User;
+  products: Product[];
 }
 
 export const getUserProfile = async (): Promise<getUserProfileResponse> => {
   const response = await axios.get(`${BE_URI}/user/profile`, {
-    headers: { cookies: `token=${getToken()}` }
+    headers: { cookies: `token=${getToken()}` },
   });
-  if(response.status !== 200) throw new Error(response.data.error);
+  if (response.status !== 200) throw new Error(response.data.error);
 
   return response.data;
-}
+};
 
-export const buyProducts = async (productId: string, quantity: number, token: string) => {
-    const response = await axios.post(`${BE_URI}/user/buy`, {
-        productId, quantity
-    }, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
-    if(response.status !== 200) throw new Error(response.data.error);
+export const buyProducts = async (
+  productId: string,
+  quantity: number,
+  token: string,
+) => {
+  const response = await axios.post(
+    `${BE_URI}/user/buy`,
+    {
+      productId,
+      quantity,
+    },
+    {
+      headers: { cookies: `token=${token}` },
+    },
+  );
+  if (response.status !== 200) throw new Error(response.data.error);
 
-    return response.data;
-}
+  return response.data;
+};

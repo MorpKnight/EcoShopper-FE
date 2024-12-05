@@ -58,7 +58,7 @@ const App: React.FC = () => {
             <Route path="/admin/product/:id/edit" element={<AdminEditPage />} />
           </Routes>
         </div>
-        {!isAdminRoute && <FooterNavigation />}
+        <FooterNavigation />
       </>
     );
   };
