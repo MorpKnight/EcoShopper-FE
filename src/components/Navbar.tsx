@@ -81,7 +81,9 @@ const Navbar: React.FC<{ toggleTheme: () => void; theme: string }> = ({
 
   return (
     <>
-      <header className="flex h-14 w-full flex-wrap items-center justify-between bg-tertiary p-4 md:flex-nowrap">
+      {/* empty div for spacing because header is fixed */}
+      <div className="h-14" />
+      <header className="fixed left-0 top-0 flex h-14 w-full flex-wrap items-center justify-between bg-tertiary p-4 shadow md:flex-nowrap">
         <div className="flex items-center">
           <div
             className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center space-y-0.5 bg-white md:hidden"
