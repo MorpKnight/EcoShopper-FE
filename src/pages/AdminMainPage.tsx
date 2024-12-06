@@ -1,47 +1,56 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getProducts, Product } from '../handler/goods.handler';
+import { loginEmailAdmin } from '../handler/auth.handler';
+import { toast } from 'react-toastify';
 
 export default function AdminMainPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const itemsPerPage = 6;
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getProducts();
-        if (Array.isArray(data) && data.length > 0) {
-          setProducts(data);
-          setFilteredProducts(data);
-        } else {
+    if (isAuthenticated) {
+      const fetchProducts = async () => {
+        try {
+          const data = await getProducts();
+          if (Array.isArray(data) && data.length > 0) {
+            setProducts(data);
+            setFilteredProducts(data);
+          } else {
+            setProducts([]);
+            setFilteredProducts([]);
+          }
+        } catch (error) {
+          console.error('Failed to fetch products:', error);
           setProducts([]);
           setFilteredProducts([]);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-        setProducts([]);
-        setFilteredProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
+      };
+      fetchProducts();
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get('query') || '';
-    const filtered = products.filter((product) =>
-      product.product_name.toLowerCase().includes(query.toLowerCase()),
-    );
-    setFilteredProducts(filtered);
-    setCurrentPage(1);
-  }, [location.search, products]);
+    if (isAuthenticated) {
+      const searchParams = new URLSearchParams(location.search);
+      const query = searchParams.get('query') || '';
+      const filtered = products.filter((product) =>
+        product.product_name.toLowerCase().includes(query.toLowerCase()),
+      );
+      setFilteredProducts(filtered);
+      setCurrentPage(1);
+    }
+  }, [location.search, products, isAuthenticated]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -49,6 +58,21 @@ export default function AdminMainPage() {
 
   const handleAddProduct = () => {
     navigate('/admin/add-product');
+  };
+
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const response = await loginEmailAdmin(email, password);
+      toast.success(response.message);
+      setIsAuthenticated(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error("Email or password doesn't match");
+      } else {
+        toast.error('An unknown error occurred');
+      }
+    }
   };
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -69,6 +93,50 @@ export default function AdminMainPage() {
     }
     return pageNumbers;
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-tertiary-light">
+        <div className="w-full max-w-md space-y-6 rounded-lg border border-secondary-300 bg-white p-8 shadow-lg">
+          <h2 className="text-center text-2xl font-bold text-text-primary">
+            Admin Login
+          </h2>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-secondary">
+                Email:
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              />
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-secondary">
+                Password:
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full rounded border border-secondary-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full rounded bg-secondary-700 px-4 py-2 text-white hover:bg-secondary-500 focus:outline-none focus:ring-2 focus:ring-secondary-300"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
