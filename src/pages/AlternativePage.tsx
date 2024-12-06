@@ -7,9 +7,11 @@ export default function AlternativePage() {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center p-4">
-      <h1 className="mb-4 font-inter text-2xl font-bold text-secondary-700 drop-shadow fixed top-16">
-        Alternative Page
-      </h1>
+      <div className="pt-20">
+        <h1 className="mb-4 font-inter text-2xl font-bold text-secondary-700 drop-shadow">
+          Alternative Page
+        </h1>
+      </div>
       <ProductTable searchQuery="" />
     </div>
   );
