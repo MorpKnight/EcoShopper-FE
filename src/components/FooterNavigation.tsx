@@ -25,6 +25,7 @@ export default function FooterNavigation() {
 
       {/* Info Icon */}
       <button
+        onClick={() => navigate('/user-info')} 
         className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary-500 text-text-white transition-colors duration-300 hover:bg-secondary-700"
         aria-label="Info"
       >

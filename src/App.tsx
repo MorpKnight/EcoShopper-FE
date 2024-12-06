@@ -9,6 +9,7 @@ import MainPage from './pages/MainPage';
 import DevelopmentPage from './pages/DevelopmentPage';
 import Navbar from './components/Navbar';
 import FooterNavigation from './components/FooterNavigation';
+import AdminFooterNavigation from './components/AdminFooterNavigation';
 import AuthPage from './pages/AuthPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -17,6 +18,7 @@ import NavbarAdmin from './components/NavbarAdmin';
 import AdminProductDetailPage from './pages/AdminProductDetailPage';
 import AdminEditPage from './pages/AdminEditPage';
 import AdminAddProduct from './pages/AdminAddProduct';
+import UserInfoPage from './pages/UserInfoPage';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -49,6 +51,7 @@ const App: React.FC = () => {
             <Route path="/dev" element={<DevelopmentPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="*" element={<NotFoundPage />} />
+            <Route path="/user-info" element={<UserInfoPage />} />
 
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminMainPage />} />
@@ -58,10 +61,10 @@ const App: React.FC = () => {
             />
             <Route path="/admin/product/:id/edit" element={<AdminEditPage />} />
             <Route path="/admin/add-product" element={<AdminAddProduct />} />
-            
           </Routes>
         </div>
-        <FooterNavigation />
+        {/* Conditional render Footer */}
+        {isAdminRoute ? <AdminFooterNavigation /> : <FooterNavigation />}
       </>
     );
   };
