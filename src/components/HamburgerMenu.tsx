@@ -21,7 +21,7 @@ const HamburgerMenu: React.FC<{
 }) => {
   return (
     <div className="fixed inset-0 z-50 flex">
-      <div className="relative flex w-64 translate-x-0 transform flex-col justify-center rounded-r-lg bg-white p-6 shadow-lg transition-transform duration-300 ease-in-out">
+      <div className="relative flex w-64 translate-x-0 transform flex-col items-end justify-end rounded-r-lg bg-tertiary-light p-6 pb-24 shadow-lg transition-transform duration-300 ease-in-out">
         <button
           onClick={closeMenu}
           className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"

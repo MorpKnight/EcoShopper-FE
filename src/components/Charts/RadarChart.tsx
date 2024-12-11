@@ -8,13 +8,14 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { ratingBreakdown } from '../../pages/ProductDetailPage';
 
 export default function RadarChart({
   title,
   data,
 }: {
   title: string;
-  data: number[];
+  data: ratingBreakdown;
 }) {
   // Register components with Chart.js
   ChartJS.register(
@@ -32,7 +33,7 @@ export default function RadarChart({
     datasets: [
       {
         label: title,
-        data: data,
+        data: [data.a, data.b, data.c, data.d, data.e],
         backgroundColor: 'rgba(136, 132, 216, 0.6)',
         borderColor: '#8884d8',
         borderWidth: 2,

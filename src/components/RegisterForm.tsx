@@ -21,9 +21,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
     const hasSequentialNumbers = /(012|123|234|345|456|567|678|789)/.test(
       password,
     );
+    const charLength = password.length >= 8;
 
-    if (!hasLowercase || !hasUppercase || !hasNumber || hasSequentialNumbers) {
-      return 'Password must contain lowercase, uppercase, and numbers, and should not contain sequential numbers';
+    if (
+      !hasLowercase ||
+      !hasUppercase ||
+      !hasNumber ||
+      hasSequentialNumbers ||
+      !charLength
+    ) {
+      return 'Password must contain lowercase, uppercase, and numbers, and should not contain sequential numbers. Password should be at least 8 characters long';
     }
     return '';
   };
@@ -32,12 +39,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
     const error = validatePassword(newPassword);
+
+    // if error is not empty, set password error (Highest priority for password not valid)
     if (error) {
       setPasswordError(error);
-    } else if (confirmPassword && newPassword !== confirmPassword) {
-      setPasswordError("Passwords don't match");
     } else {
-      setPasswordError('');
+      if (confirmPassword && newPassword !== confirmPassword) {
+        setPasswordError("Passwords don't match");
+      } else {
+        setPasswordError('');
+      }
     }
   };
 
@@ -70,6 +81,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onError }) => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         onError('Registration failed');
+        console.log(error);
       } else {
         onError('An unknown error occurred');
       }

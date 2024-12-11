@@ -6,6 +6,14 @@ import { toast } from 'react-toastify';
 import ProductRow from '../components/ProductTable/ProductRow';
 import RadarChart from '../components/Charts/RadarChart';
 
+export interface ratingBreakdown {
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+  e: number;
+}
+
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
 
@@ -17,6 +25,14 @@ export default function ProductDetailPage() {
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev));
+
+  const [rating, setRating] = useState<ratingBreakdown>({
+    a: 0,
+    b: 0,
+    c: 0,
+    d: 0,
+    e: 0,
+  });
 
   const navigate = useNavigate();
 
@@ -39,6 +55,17 @@ export default function ProductDetailPage() {
   };
 
   useEffect(() => {
+    // HACK: Temporary data
+    // randomize rating
+
+    setRating({
+      a: Math.floor(Math.random() * 10),
+      b: Math.floor(Math.random() * 10),
+      c: Math.floor(Math.random() * 10),
+      d: Math.floor(Math.random() * 10),
+      e: Math.floor(Math.random() * 10),
+    });
+
     const fetchProduct = async () => {
       try {
         if (id) {
@@ -134,7 +161,7 @@ export default function ProductDetailPage() {
           </section>
           <section className="w-1/2 rounded-lg bg-white p-4 shadow-md">
             {/* TODO: product gak ada rating dibagi per kategori  */}
-            <RadarChart title="Sustainability" data={[10, 20, 15, 4, 5]} />
+            <RadarChart title="Sustainability" data={rating} />
           </section>
         </div>
 
